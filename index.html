@@ -111,10 +111,15 @@
         .live-visit-card { background: #fff; border: 2px solid var(--secondary); border-radius: 8px; padding: 15px; margin-bottom: 15px; }
         .live-visit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed var(--border); }
 
+        /* Print Area Formatting styles */
+        .report-notes-box { background: #f8fafc; border: 1px solid var(--border); padding: 8px; border-radius: 4px; font-size: 13px; margin-top: 4px; color: #4a5568; }
+
         @media print {
             body * { visibility: hidden; }
-            #printArea, #printArea * { visibility: visible; }
+            #printArea, #printArea *, #customReportPrintArea, #customReportPrintArea * { visibility: visible; }
+            .no-print { display: none !important; }
             #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 0; box-shadow: none; border: none; }
+            #customReportPrintArea { position: absolute; left: 0; top: 0; width: 100%; padding: 0; box-shadow: none; border: none; }
         }
     </style>
 </head>
@@ -163,6 +168,7 @@
                 <div class="nav-link" id="tabLinkAdmins" onclick="switchAdminSubView('admins')">🛡️ Administrative Framework Studio</div>
                 <div class="nav-link" id="tabLinkInvoices" onclick="switchAdminSubView('invoices')">📊 Invoice Ledger Studio</div>
                 <div class="nav-link" id="tabLinkAccounts" onclick="switchAdminSubView('accounts')">📈 Accounts Activity</div>
+                <div class="nav-link" id="tabLinkReports" onclick="switchAdminSubView('reports')">📋 Custom Log Printer</div>
                 <div class="nav-link" id="tabLinkCompany" onclick="switchAdminSubView('company')">⚙️ Company Profile Studio</div>
             </div>
 
@@ -246,9 +252,19 @@
                 </div>
 
                 <div class="card">
-                    <h2>Comprehensive Operational Allocation Logs</h2>
-                    <table>
-                        <thead><tr><th>Timeline Block</th><th>Target Beneficiary</th><th>Field Staff</th><th>Expected Allocation</th><th>Calculated Cost</th><th>Status</th><th>Actions</th></tr></thead>
+                    <h2>Comprehensive Operational Allocation Logs & Staff Care Notes Editor</h2>
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Timeline Block</th>
+                                <th style="width: 15%;">Beneficiary</th>
+                                <th style="width: 15%;">Field Staff</th>
+                                <th style="width: 10%;">Cost</th>
+                                <th style="width: 10%;">Status</th>
+                                <th style="width: 25%;">Care Log Notes (Editable)</th>
+                                <th style="width: 10%;">Actions</th>
+                            </tr>
+                        </thead>
                         <tbody id="individualVisitsTableBody"></tbody>
                     </table>
                 </div>
@@ -414,6 +430,65 @@
                 </div>
             </div>
 
+            <!-- Custom Log Printer & Statement Engine Sub-tab -->
+            <div id="adminSubReports" class="hidden">
+                <div class="card no-print">
+                    <h2>📋 Historical Visit & Care Notes Statement Builder</h2>
+                    <p style="font-size:13px; color:#4a5568; margin-bottom:15px;">Filter, pull, and print historical records for any specific client across any custom timeframe window, complete with internal care notes logs.</p>
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Select Target Beneficiary</label>
+                            <select id="reportClientSelect"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Timeframe Start Date</label>
+                            <input type="date" id="reportStartDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Timeframe End Date</label>
+                            <input type="date" id="reportEndDate">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top:5px;" onclick="generateCustomCareLogReport()">🔍 Extract Statement Logs</button>
+                </div>
+
+                <!-- Printable Report Box -->
+                <div class="card" id="customReportPrintArea">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 12px;">
+                        <div>
+                            <h2 style="border:none; padding:0; margin:0; color:var(--primary); font-size: 22px;">HISTORICAL CARE WORK LOGS STATEMENT</h2>
+                            <p style="font-size: 13px; color:var(--secondary); font-weight:bold; margin-top:4px;" id="lblReportCriteriaHeader">Scope Window: Full History</p>
+                        </div>
+                        <div style="text-align: right; font-size: 13px; color:#4a5568;">
+                            <strong>Issuer Agency:</strong> <span id="lblReportIssuerName">Galaxy Care</span><br>
+                            <strong>Generated:</strong> 2026-07-06
+                        </div>
+                    </div>
+                    
+                    <div id="reportClientDetailsBlock" style="background:#f8fafc; padding:12px; border-radius:6px; border:1px solid var(--border); font-size:13px; margin-bottom:20px; line-height:1.4;">
+                        <strong>Subject Record Recipient Details will show up here.</strong>
+                    </div>
+
+                    <table style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:15%;">Date & Time</th>
+                                <th style="width:20%;">Assigned Professional</th>
+                                <th style="width:15%;">EVV Timestamps</th>
+                                <th style="width:50%;">Clinical Care Handover Notes Log</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportOutputTableBody">
+                            <tr><td colspan="4" style="text-align:center; color:#718096;">Execute search filter settings above to parse data table.</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="no-print" style="margin-top:20px; text-align:right;">
+                        <button class="btn btn-success" onclick="window.print()">🖨️ Print Document Dossier</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Company Configuration Studio -->
             <div id="adminSubCompany" class="hidden no-print">
                 <div class="card">
@@ -454,7 +529,7 @@
             <div class="card" style="background: #ebf8ff; border: 1px solid #bee3f8;">
                 <h2>📱 Field Staff Duty Allocation Dashboard</h2>
                 <p style="font-size:14px; margin-bottom: 5px;">Welcome back to your workspace. Below are your assigned scheduling windows.</p>
-                <p style="font-size:12px; color:#4a5568;">Please execute EVV (Electronic Visit Verification) check-in and check-out on site.</p>
+                <p style="font-size:12px; color:#4a5568;">Completed shifts automatically clear from this display dashboard profile once logs are saved.</p>
             </div>
 
             <div id="carerVisitsContainer">
@@ -541,13 +616,11 @@
             saveDatabaseToStorage();
         }
 
-        // --- EXTENDED GATEWAY ROUTER ---
         function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value.trim();
             const pass = document.getElementById('loginPassword').value;
 
-            // 1. Check Administrative Matrix Registers
             const matchedAdmin = db.supervisors.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
             if (matchedAdmin) {
                 currentSessionUser = { type: 'ADMIN', data: matchedAdmin };
@@ -555,7 +628,6 @@
                 return;
             }
 
-            // 2. Check Employee Staff Registers for Live Gateway Entry
             const matchedCarer = db.employees.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
             if (matchedCarer) {
                 currentSessionUser = { type: 'EMPLOYEE', data: matchedCarer };
@@ -599,12 +671,12 @@
             document.getElementById('tabLinkAdmins').className = p.system === 'none' ? 'hidden' : 'nav-link';
             document.getElementById('tabLinkInvoices').className = p.finance === 'none' ? 'hidden' : 'nav-link';
             document.getElementById('tabLinkAccounts').className = p.finance === 'none' ? 'hidden' : 'nav-link';
+            document.getElementById('tabLinkReports').className = p.care === 'none' ? 'hidden' : 'nav-link';
             document.getElementById('tabLinkCompany').className = p.system === 'none' ? 'hidden' : 'nav-link';
         }
 
-        // --- ADMIN TABS CONTROL ---
         function switchAdminSubView(target) {
-            const views = ['home', 'clients', 'employees', 'admins', 'invoices', 'accounts', 'company'];
+            const views = ['home', 'clients', 'employees', 'admins', 'invoices', 'accounts', 'reports', 'company'];
             views.forEach(v => {
                 const el = document.getElementById(`adminSub${v.charAt(0).toUpperCase() + v.slice(1)}`);
                 if (el) el.classList.add('hidden');
@@ -622,23 +694,23 @@
             if (target === 'admins') renderSupervisorsModuleContext();
             if (target === 'invoices') renderInvoiceModuleContext();
             if (target === 'accounts') renderAccountsPortfolioContext();
+            if (target === 'reports') renderReportsModuleContext();
             if (target === 'company') seedCompanyConfigurationFields();
         }
 
-        // --- EMPLOYEE CARER ENGINE LOGIC ---
+        // --- FILTERED STAFF VIEW: INCOMPLETE ITEMS ONLY ---
         function renderCarerPortalWorkspace() {
             const container = document.getElementById('carerVisitsContainer');
             container.innerHTML = '';
 
-            // Query allocations locked explicitly to this logged-in carer session
-            const myVisits = db.visits.filter(v => v.employeeId === currentSessionUser.data.id);
+            // Filter configuration ensures COMPLETED tasks vanish from the field professional dashboard
+            const myVisits = db.visits.filter(v => v.employeeId === currentSessionUser.data.id && v.status !== 'COMPLETED');
 
             if(myVisits.length === 0) {
-                container.innerHTML = `<div class="card" style="text-align:center; color:#718096;">No shift allocations documented for your profile.</div>`;
+                container.innerHTML = `<div class="card" style="text-align:center; color:#718096; padding: 30px;">🎉 All allocated jobs finished! No upcoming pending allocations documented on your workspace.</div>`;
                 return;
             }
 
-            // Sort chronically so nearest assignments show up on top
             myVisits.sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
 
             myVisits.forEach(v => {
@@ -652,25 +724,17 @@
                 
                 if (v.status === 'PENDING') {
                     actionInterfaceHTML = `
-                        <button class="btn btn-success" onclick="executeCarerClockIn('${v.id}')">▶ Start Shift (Clock-In)</button>
+                        <button class="btn btn-success" style="width:100%; justify-content:center; padding:12px;" onclick="executeCarerClockIn('${v.id}')">▶ Start Shift (Clock-In)</button>
                     `;
                 } else if (v.status === 'ACTIVE') {
                     actionInterfaceHTML = `
-                        <div style="background:#fffaf0; border:1px solid #feebc8; padding:10px; border-radius:6px; margin-top:10px;">
-                            <p style="font-size:12px; font-weight:bold; color:var(--warning); margin-bottom:8px;">⏱️ Visit Currently Active since: ${v.clockIn}</p>
+                        <div style="background:#fffaf0; border:1px solid #feebc8; padding:12px; border-radius:6px; margin-top:10px;">
+                            <p style="font-size:13px; font-weight:bold; color:var(--warning); margin-bottom:8px;">⏱️ Visit Active since: ${v.clockIn}</p>
                             <div class="form-group">
-                                <label style="color:var(--danger)">Mandatory Handover clinical care Notes *</label>
-                                <textarea id="liveNotesInput_${v.id}" rows="3" required placeholder="Write clinical visit summary details here before finishing shift task..."></textarea>
+                                <label style="color:var(--danger)">Mandatory Care Handover Notes *</label>
+                                <textarea id="liveNotesInput_${v.id}" rows="4" required placeholder="Describe support provided, clinical status, safety checks, or updates... (Minimum 5 characters required to submit)"></textarea>
                             </div>
-                            <button class="btn btn-danger" style="width:100%; justify-content:center;" onclick="executeCarerClockOut('${v.id}')">🛑 Stop Shift & Submit Log</button>
-                        </div>
-                    `;
-                } else if (v.status === 'COMPLETED') {
-                    actionInterfaceHTML = `
-                        <div style="margin-top:10px; font-size:13px; color:#4a5568; line-height:1.4;">
-                            <strong>Logged Verification Data:</strong><br>
-                            🏁 In: <code>${v.clockIn}</code> | Out: <code>${v.clockOut}</code><br>
-                            📝 <em>${v.notes}</em>
+                            <button class="btn btn-danger" style="width:100%; justify-content:center; padding:10px; font-size:14px;" onclick="executeCarerClockOut('${v.id}')">🛑 Stop Shift & Submit Log</button>
                         </div>
                     `;
                 }
@@ -685,10 +749,10 @@
                             ${v.date} @ ${v.time}
                         </div>
                     </div>
-                    <div style="font-size:13px; margin-bottom:10px; color:#4a5568;">
+                    <div style="font-size:13px; margin-bottom:10px; color:#4a5568; line-height:1.4;">
                         <strong>Address:</strong> ${client.address}<br>
                         <strong>Directives Plan:</strong> <span style="color:#2b6cb0;">${client.plan}</span><br>
-                        <strong>Scheduled Duration:</strong> ${v.hours} hours
+                        <strong>Expected Duration:</strong> ${v.hours} hours
                     </div>
                     ${actionInterfaceHTML}
                 `;
@@ -713,9 +777,8 @@
 
             const notesVal = document.getElementById(`liveNotesInput_${visitId}`).value.trim();
             
-            // Core Mandatory Guard Clause validation to enforce safety protocols
             if (!notesVal || notesVal.length < 5) {
-                alert("Validation Exception: Mandatory Visit notes entry missing. You must enter detailed descriptions to register completion.");
+                alert("Validation Exception: Mandatory visit logs missing! Please insert specific shift notes before hitting stop.");
                 return;
             }
 
@@ -725,11 +788,162 @@
             db.visits[idx].status = 'COMPLETED';
             
             saveDatabaseToStorage();
-            alert("Electronic Visit Logs saved and committed to corporate administration ledger.");
+            alert("Success: Log entry saved. Task has cleared from your dashboard workspace.");
             renderCarerPortalWorkspace();
         }
 
-        // --- CORE RETAINED ADMIN OPERATIONS BLOCKS ---
+        // --- EDITABLE ADMIN SYSTEM MANAGEMENT ENGINE ---
+        function renderClientsModuleContext() {
+            renderAllLookupSelectMenus();
+            const body = document.getElementById('clientTableBody');
+            body.innerHTML = '';
+            db.clients.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><code>${c.customId}</code></td>
+                    <td><strong>${c.name}</strong></td>
+                    <td>${c.phone}</td>
+                    <td>£${parseFloat(c.rate).toFixed(2)}/hr</td>
+                    <td><small>${c.address}</small></td>
+                    <td>
+                        <button class="btn btn-warning" style="padding:4px 8px; font-size:11px;" onclick="loadClientToForm('${c.id}')">Edit</button>
+                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteClientProfile('${c.id}')">Delete</button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+
+            // Re-render master table including interactive editable log note segments
+            renderAdminIndividualVisitsTable();
+        }
+
+        function renderAdminIndividualVisitsTable() {
+            const visitsBody = document.getElementById('individualVisitsTableBody');
+            visitsBody.innerHTML = '';
+            
+            // Show recent assignments on top
+            const visualQueue = [...db.visits].reverse();
+
+            visualQueue.forEach(v => {
+                const client = db.clients.find(c => c.id === v.clientId);
+                const carer = db.employees.find(e => e.id === v.employeeId);
+                const tr = document.createElement('tr');
+                
+                // Formulate notes entry section: Textarea allows live administrative changes
+                let notesEditingBlock = '';
+                if(v.status === 'COMPLETED') {
+                    notesEditingBlock = `
+                        <div style="margin-bottom: 4px;"><small style="color:var(--success); font-weight:bold;">⏱️ Checked In: ${v.clockIn || 'N/A'} | Out: ${v.clockOut || 'N/A'}</small></div>
+                        <textarea id="adminNoteField_${v.id}" rows="2" style="font-size:12px; width:100%;" onchange="updateVisitNoteFromAdmin('${v.id}', this.value)">${v.notes || ''}</textarea>
+                    `;
+                } else if (v.status === 'ACTIVE') {
+                    notesEditingBlock = `<span style="color:var(--warning); font-size:12px; font-weight:bold;">⚠️ In Progress since: ${v.clockIn}</span>`;
+                } else {
+                    notesEditingBlock = `<span style="color:#718096; font-size:12px; font-style:italic;">No log data submitted yet</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td><strong>${v.date}</strong> <br><small>@ ${v.time} (${v.hours}h)</small></td>
+                    <td>${client ? client.name : 'N/A'}</td>
+                    <td>${carer ? carer.name : 'N/A'}</td>
+                    <td>£${v.cost.toFixed(2)}</td>
+                    <td><span class="badge badge-${v.status.toLowerCase()}">${v.status}</span></td>
+                    <td>${notesEditingBlock}</td>
+                    <td>
+                        ${v.status === 'PENDING' ? `<button class="btn btn-success" style="padding:3px 6px; font-size:11px; margin-bottom:4px; display:block;" onclick="changeVisitExecutionStatus('${v.id}','COMPLETED')">Force Complete</button>` : ''}
+                        <button class="btn btn-danger" style="padding:3px 6px; font-size:11px; display:block;" onclick="purgeVisitRecord('${v.id}')">Purge</button>
+                    </td>
+                `;
+                visitsBody.appendChild(tr);
+            });
+        }
+
+        // Live admin update handler to modify notes arrays safely
+        function updateVisitNoteFromAdmin(visitId, updatedValue) {
+            const idx = db.visits.findIndex(v => v.id === visitId);
+            if (idx > -1) {
+                db.visits[idx].notes = updatedValue;
+                saveDatabaseToStorage();
+                // Toast indicator instead of full layout snap
+                console.log(`Log records updated for shift context: ${visitId}`);
+            }
+        }
+
+        // --- CUSTOM REPORTS LOOKUP ENGINE (TIME + CLIENT FILTERS) ---
+        function renderReportsModuleContext() {
+            renderAllLookupSelectMenus();
+            
+            // Set default search constraints to current date parameters
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('reportStartDate').value = todayStr.substring(0, 8) + "01";
+            document.getElementById('reportEndDate').value = todayStr;
+        }
+
+        function generateCustomCareLogReport() {
+            const clientId = document.getElementById('reportClientSelect').value;
+            const startDate = document.getElementById('reportStartDate').value;
+            const endDate = document.getElementById('reportEndDate').value;
+
+            const clientObj = db.clients.find(c => c.id === clientId);
+            if(!clientObj) {
+                alert("Please configure a valid client focus parameter target first.");
+                return;
+            }
+
+            // Sync corporate settings header
+            document.getElementById('lblReportIssuerName').innerText = db.company.name;
+            document.getElementById('lblReportCriteriaHeader').innerText = `Statement Scope Logs Window: From ${startDate || 'Earliest'} to ${endDate || 'Latest'}`;
+            
+            document.getElementById('reportClientDetailsBlock').innerHTML = `
+                <strong>Beneficiary Name:</strong> ${clientObj.name} &nbsp;|&nbsp; <strong>Unique ID Code:</strong> ${clientObj.customId}<br>
+                <strong>Residential Address Context:</strong> ${clientObj.address}<br>
+                <strong>Assigned Medical Directives:</strong> ${clientObj.plan}
+            `;
+
+            // Filter operation logs match constraints exactly
+            const logsDataset = db.visits.filter(v => {
+                const matchesClient = v.clientId === clientId;
+                const matchesStart = startDate ? v.date >= startDate : true;
+                const matchesEnd = endDate ? v.date <= endDate : true;
+                return matchesClient && matchesStart && matchesEnd;
+            });
+
+            // Sort chronically
+            logsDataset.sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+
+            const tableBody = document.getElementById('reportOutputTableBody');
+            tableBody.innerHTML = '';
+
+            if(logsDataset.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#718096;">No visit allocations match search filter limits.</td></tr>`;
+                return;
+            }
+
+            logsDataset.forEach(v => {
+                const carer = db.employees.find(e => e.id === v.employeeId);
+                const tr = document.createElement('tr');
+                
+                let evvString = "N/A";
+                if(v.clockIn) {
+                    evvString = `In: ${v.clockIn.split(' ')[1] || v.clockIn}<br>Out: ${v.clockOut ? v.clockOut.split(' ')[1] : 'Active'}`;
+                }
+
+                tr.innerHTML = `
+                    <td><strong>${v.date}</strong><br><small>Scheduled: ${v.time}</small></td>
+                    <td><strong>${carer ? carer.name : 'Unassigned Professional'}</strong></td>
+                    <td style="font-family:monospace; font-size:12px;">${evvString}</td>
+                    <td>
+                        <div style="font-weight:bold; margin-bottom:4px; font-size:12px; color:var(--primary);">
+                            Status Badge: <span class="badge badge-${v.status.toLowerCase()}">${v.status}</span>
+                        </div>
+                        <div class="report-notes-box">${v.notes || '<em>No clinical text comments saved.</em>'}</div>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // --- GENERAL BASELINE ROUTER ADAPTERS ---
         function renderDashboardDataStream() {
             document.getElementById('statClientsCount').innerText = `${db.clients.length} Clients`;
             document.getElementById('statStaffCount').innerText = `${db.employees.length} Carers`;
@@ -752,48 +966,6 @@
                     <td><span class="badge badge-${v.status.toLowerCase()}">${v.status}</span></td>
                 `;
                 streamTable.appendChild(tr);
-            });
-        }
-
-        function renderClientsModuleContext() {
-            renderAllLookupSelectMenus();
-            const body = document.getElementById('clientTableBody');
-            body.innerHTML = '';
-            db.clients.forEach(c => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><code>${c.customId}</code></td>
-                    <td><strong>${c.name}</strong></td>
-                    <td>${c.phone}</td>
-                    <td>£${parseFloat(c.rate).toFixed(2)}/hr</td>
-                    <td><small>${c.address}</small></td>
-                    <td>
-                        <button class="btn btn-warning" style="padding:4px 8px; font-size:11px;" onclick="loadClientToForm('${c.id}')">Edit</button>
-                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteClientProfile('${c.id}')">Delete</button>
-                    </td>
-                `;
-                body.appendChild(tr);
-            });
-
-            const visitsBody = document.getElementById('individualVisitsTableBody');
-            visitsBody.innerHTML = '';
-            [...db.visits].reverse().forEach(v => {
-                const client = db.clients.find(c => c.id === v.clientId);
-                const carer = db.employees.find(e => e.id === v.employeeId);
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${v.date}</strong> <small>@ ${v.time}</small></td>
-                    <td>${client ? client.name : 'N/A'}</td>
-                    <td>${carer ? carer.name : 'N/A'}</td>
-                    <td>${v.hours} Hrs</td>
-                    <td>£${v.cost.toFixed(2)}</td>
-                    <td><span class="badge badge-${v.status.toLowerCase()}">${v.status}</span></td>
-                    <td>
-                        ${v.status === 'PENDING' ? `<button class="btn btn-success" style="padding:3px 6px; font-size:11px;" onclick="changeVisitExecutionStatus('${v.id}','COMPLETED')">Verify</button>` : ''}
-                        <button class="btn btn-danger" style="padding:3px 6px; font-size:11px;" onclick="purgeVisitRecord('${v.id}')">Purge</button>
-                    </td>
-                `;
-                visitsBody.appendChild(tr);
             });
         }
 
@@ -941,6 +1113,9 @@
             const idx = db.visits.findIndex(v => v.id === visitId);
             if (idx > -1) {
                 db.visits[idx].status = status;
+                if(status === 'COMPLETED' && !db.visits[idx].notes) {
+                    db.visits[idx].notes = "Completed via Administrative override adjustment execution.";
+                }
                 saveDatabaseToStorage();
                 renderClientsModuleContext();
             }
@@ -954,7 +1129,6 @@
             }
         }
 
-        // --- REST OF ADMIN PRIVILEGES CONTROLS ---
         function renderSupervisorsModuleContext() {
             const body = document.getElementById('supervisorTableBody');
             body.innerHTML = '';
@@ -1117,8 +1291,13 @@
         }
 
         function renderAllLookupSelectMenus() {
-            const clientMenus = [document.getElementById('rotaClientSelect'), document.getElementById('genInvoiceClientSelect')];
+            const clientMenus = [
+                document.getElementById('rotaClientSelect'), 
+                document.getElementById('genInvoiceClientSelect'),
+                document.getElementById('reportClientSelect')
+            ];
             const carerMenus = [document.getElementById('rotaEmployeeSelect')];
+            
             clientMenus.forEach(menu => {
                 if(!menu) return; menu.innerHTML = '';
                 db.clients.forEach(c => { const opt = document.createElement('option'); opt.value = c.id; opt.innerText = c.name; menu.appendChild(opt); });
