@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Domiciliary Framework Portal & Admin Studio</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-hover: #2a4365;
+            --secondary: #3182ce;
+            --success: #38a169;
+            --danger: #e53e3e;
+            --warning: #dd6b20;
+            --bg: #f7fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 20px; }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .brand-container { display: flex; align-items: center; gap: 15px; }
+        .logo-box-display {
+            width: 65px; height: 65px; background: var(--primary); color: white;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 10px; text-align: center; border: 2px solid var(--secondary);
+            overflow: hidden;
+        }
+        .logo-box-display img { width: 100%; height: 100%; object-fit: cover; }
+
+        h1 { color: var(--primary); font-size: 24px; }
+        .company-sub { font-size: 13px; color: var(--secondary); font-weight: bold; text-transform: uppercase; letter-spacing: 1px;}
+
+        .btn { padding: 8px 14px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: background 0.2s; font-size: 13px; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+        .btn-success { background-color: var(--success); color: white; }
+        .btn-danger { background-color: var(--danger); color: white; }
+        .btn-warning { background-color: var(--warning); color: white; }
+        .btn-logout { background-color: #718096; color: white; margin-left: 10px; }
+
+        .card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 20px; }
+        h2 { margin-bottom: 15px; color: #4a5568; border-left: 4px solid var(--secondary); padding-left: 8px; font-size: 18px;}
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; }
+        @media (max-width: 992px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+        .form-group { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 13px; color: #4a5568; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px; color: var(--text); }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(49,130,206,0.15); }
+
+        .weekday-selector { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 5px; margin-bottom: 10px;}
+        .day-checkbox { display: flex; align-items: center; gap: 4px; background: #edf2f7; padding: 6px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer;}
+        .day-checkbox input { width: auto; cursor: pointer; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; margin-bottom: 15px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 14px; }
+        th { background-color: #edf2f7; color: var(--primary); font-weight: bold; }
+
+        .hidden { display: none !important; }
+        .login-box { max-width: 400px; margin: 100px auto; }
+        
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; }
+        .badge-pending { background: #feebc8; color: #c05621; }
+        .badge-active { background: #ebf8ff; color: #2b6cb0; }
+        .badge-completed { background: #c6f6d5; color: #22543d; }
+        .badge-disabled { background: #e2e8f0; color: #4a5568; }
+
+        .dept-box { padding: 15px; border-radius: 6px; border: 1px solid var(--border); background: #f8fafc; text-align: center;}
+        .dept-title { font-weight: bold; color: var(--primary); font-size: 14px; margin-bottom: 5px; text-transform: uppercase;}
+        .dept-stat { font-size: 22px; font-weight: bold; color: var(--secondary); }
+
+        .statement-summary { background: #ebf8ff; padding: 15px; border-radius: 6px; margin-bottom: 15px; display: flex; gap: 30px; justify-content: space-around; flex-wrap: wrap; }
+        .summary-item { font-size: 15px; font-weight: bold; color: #2b6cb0; }
+        
+        .admin-nav { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 10px; flex-wrap: wrap; }
+        .nav-link { padding: 8px 14px; background: #e2e8f0; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 13px; transition: all 0.2s; }
+        .nav-link:hover { background: #cbd5e0; }
+        .nav-link.active { background: var(--primary); color: white; }
+
+        .payment-status-header { padding: 8px 12px; border-radius: 4px; font-weight: bold; font-size: 14px; text-align: center; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .status-unpaid { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+        .status-paid { background: #f0fff4; color: #22543d; border: 1px solid #9ae6b4; }
+
+        .clickable-row { cursor: pointer; transition: background 0.2s; }
+        .clickable-row:hover { background: #edf2f7; }
+        .selected-row { background: #bee3f8 !important; border-left: 4px solid var(--secondary); }
+
+        .logo-preview-img { width: 100%; height: 100%; object-fit: contain; }
+
+        .perm-grid { background: #f7fafc; padding: 10px; border-radius: 6px; border: 1px solid var(--border); margin-top: 8px; }
+        .perm-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px dashed var(--border); }
+        .perm-label { font-size: 12px; font-weight: bold; color: #4a5568; }
+        .perm-select { width: auto; padding: 2px 6px; font-size: 12px; }
+
+        /* Mobile Responsive Carer Layout styles */
+        .live-visit-card { background: #fff; border: 2px solid var(--secondary); border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .live-visit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed var(--border); }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 0; box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Authentication Interface Box -->
+    <div id="loginPage" class="login-box card">
+        <div style="text-align: center; margin-bottom: 15px;">
+            <div class="logo-box-display dynamicLogoTarget" style="margin: 0 auto 10px auto;">GALAXY CARE</div>
+            <h2>Enterprise Terminal Gateway</h2>
+        </div>
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>System Email Address</label>
+                <input type="email" id="loginEmail" required placeholder="admin@care.com or user@care.com">
+            </div>
+            <div class="form-group">
+                <label>Security Access Password</label>
+                <input type="password" id="loginPassword" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Secure Authenticate</button>
+        </form>
+    </div>
+
+    <!-- Application Dashboard Wrapper -->
+    <div id="appContainer" class="hidden">
+        <header>
+            <div class="brand-container">
+                <div class="logo-box-display dynamicLogoTarget">GALAXY CARE</div>
+                <div>
+                    <h1 id="headerCorporateTitle">Corporate Service Provider</h1>
+                    <p class="company-sub" id="userGreeting">Domiciliary Terminal Architecture</p>
+                </div>
+            </div>
+            <div class="no-print">
+                <button class="btn btn-logout" onclick="handleLogout()">Exit Session</button>
+            </div>
+        </header>
+
+        <!-- ================= ADMINISTRATIVE PANEL VIEW ================= -->
+        <div id="adminPanel" class="hidden">
+            <div class="admin-nav no-print">
+                <div class="nav-link active" id="tabLinkHome" onclick="switchAdminSubView('home')">🏠 Dashboard Home</div>
+                <div class="nav-link" id="tabLinkClients" onclick="switchAdminSubView('clients')">👥 Clients & Rota Grid</div>
+                <div class="nav-link" id="tabLinkEmployees" onclick="switchAdminSubView('employees')">👩‍⚕️ Field Care Staff</div>
+                <div class="nav-link" id="tabLinkAdmins" onclick="switchAdminSubView('admins')">🛡️ Administrative Framework Studio</div>
+                <div class="nav-link" id="tabLinkInvoices" onclick="switchAdminSubView('invoices')">📊 Invoice Ledger Studio</div>
+                <div class="nav-link" id="tabLinkAccounts" onclick="switchAdminSubView('accounts')">📈 Accounts Activity</div>
+                <div class="nav-link" id="tabLinkCompany" onclick="switchAdminSubView('company')">⚙️ Company Profile Studio</div>
+            </div>
+
+            <!-- Dashboard Stream Sub-tab -->
+            <div id="adminSubHome" class="no-print">
+                <div class="grid-4" style="margin-bottom: 20px;">
+                    <div class="dept-box"><div class="dept-title">Care Register</div><div class="dept-stat" id="statClientsCount">0 Clients</div></div>
+                    <div class="dept-box"><div class="dept-title">Active Field Staff</div><div class="dept-stat" id="statStaffCount">0 Carers</div></div>
+                    <div class="dept-box"><div class="dept-title">Unexecuted Rota Slots</div><div class="dept-stat" id="statPendingCount">0 Shifts</div></div>
+                    <div class="dept-box" style="background:#f0fff4;"><div class="dept-title">Gross Income Generated</div><div class="dept-stat" style="color:var(--success);">£<span id="statGrossRevenue">0.00</span></div></div>
+                </div>
+                <div class="card">
+                    <h2>Live Framework Stream (Recent Deployments)</h2>
+                    <table>
+                        <thead><tr><th>Client Name</th><th>Assigned Professional</th><th>Deployment Window</th><th>Status</th></tr></thead>
+                        <tbody id="dashboardLiveTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Clients Management Sub-tab -->
+            <div id="adminSubClients" class="hidden no-print">
+                <div class="grid-2">
+                    <div class="card">
+                        <h2 id="clientFormTitle">Configure Client Identity Parameters</h2>
+                        <form id="clientForm" onsubmit="saveClientProfile(event)">
+                            <input type="hidden" id="editClientInternalId">
+                            <div class="grid-2">
+                                <div class="form-group"><label>Unique ID Code</label><input type="text" id="clientCustomId" required placeholder="GCCS-1002"></div>
+                                <div class="form-group"><label>Client Full Name</label><input type="text" id="clientName" required placeholder="Arthur Miller"></div>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group"><label>Primary Phone</label><input type="text" id="clientPhone" required placeholder="0121 555 9920"></div>
+                                <div class="form-group"><label>Standard Base Tariff Rate (£/hr)</label><input type="number" id="clientRate" step="0.01" required placeholder="45.00"></div>
+                            </div>
+                            <div class="form-group"><label>Remittance Address Details</label><textarea id="clientAddress" rows="2" required></textarea></div>
+                            <div class="form-group"><label>Clinical Directives Plan</label><textarea id="clientPlan" rows="2" required></textarea></div>
+                            <button type="submit" class="btn btn-primary">Commit to Register</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h2>Batch Recurring Rota Generator</h2>
+                        <form onsubmit="generateBulkRotas(event)">
+                            <div class="grid-2">
+                                <div class="form-group"><label>Target Client</label><select id="rotaClientSelect" required></select></div>
+                                <div class="form-group"><label>Assigned Staff Professional</label><select id="rotaEmployeeSelect" required></select></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Target Deployment Date Window</label>
+                                <div style="display:flex; gap:10px;"><input type="date" id="rotaStartDate" required><span>to</span><input type="date" id="rotaEndDate" required></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Recurrence Patterns Selection</label>
+                                <div class="weekday-selector">
+                                    <label class="day-checkbox"><input type="checkbox" value="1" class="weekDayPick"> Mon</label>
+                                    <label class="day-checkbox"><input type="checkbox" value="2" class="weekDayPick"> Tue</label>
+                                    <label class="day-checkbox"><input type="checkbox" value="3" class="weekDayPick"> Wed</label>
+                                    <label class="day-checkbox"><input type="checkbox" value="4" class="weekDayPick"> Thu</label>
+                                    <label class="day-checkbox"><input type="checkbox" value="5" class="weekDayPick"> Fri</label>
+                                    <label class="day-checkbox"><input type="checkbox" value="6" class="weekDayPick"> Sat</label>
+                                    <label class="day-checkbox"><input type="checkbox" value="0" class="weekDayPick"> Sun</label>
+                                </div>
+                            </div>
+                            <div class="grid-3">
+                                <div><label>Start Time</label><input type="time" id="rotaTime" required></div>
+                                <div><label>Hours Duration</label><input type="number" id="rotaTargetHours" min="0" value="1" required></div>
+                                <div><label>Mins Duration</label><input type="number" id="rotaTargetMins" min="0" max="59" value="30" required></div>
+                            </div>
+                            <button type="submit" class="btn btn-success" style="width:100%; margin-top:10px;">Deploy Shift Pattern Array</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Active Clients Database Directory</h2>
+                    <table>
+                        <thead><tr><th>ID Ref</th><th>Name</th><th>Phone Contact</th><th>Tariff Hourly Rate</th><th>Primary Address</th><th>Actions</th></tr></thead>
+                        <tbody id="clientTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h2>Comprehensive Operational Allocation Logs</h2>
+                    <table>
+                        <thead><tr><th>Timeline Block</th><th>Target Beneficiary</th><th>Field Staff</th><th>Expected Allocation</th><th>Calculated Cost</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="individualVisitsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Field Care Staff Sub-tab -->
+            <div id="adminSubEmployees" class="hidden no-print">
+                <div class="grid-2">
+                    <div class="card">
+                        <h2 id="employeeFormTitle">Onboard New Field Care Professional</h2>
+                        <form id="employeeForm" onsubmit="saveEmployeeProfile(event)">
+                            <input type="hidden" id="editEmpInternalId">
+                            <div class="form-group"><label>Employee Full Name</label><input type="text" id="empName" required></div>
+                            <div class="form-group"><label>System Gateway Email</label><input type="email" id="empEmail" required></div>
+                            <div class="form-group"><label>Terminal Security Password</label><input type="text" id="empPassword" required></div>
+                            <button type="submit" class="btn btn-primary" id="btnEmployeeFormSubmit">Commit Security Profile</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h2>Active Corporate Carer Directory</h2>
+                        <table>
+                            <thead><tr><th>Carer Full Name</th><th>Security Credentials ID Email</th><th>Actions</th></tr></thead>
+                            <tbody id="employeeTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Administrative Framework Matrix Sub-tab -->
+            <div id="adminSubAdmins" class="hidden no-print">
+                <div class="grid-2">
+                    <div class="card">
+                        <h2>🛡️ Onboard System Administrator / Supervisor</h2>
+                        <form id="supervisorForm" onsubmit="saveSupervisorProfile(event)">
+                            <div class="form-group"><label>Personnel Name</label><input type="text" id="supName" required placeholder="Jane Doe"></div>
+                            <div class="form-group"><label>Access Email (Username)</label><input type="email" id="supEmail" required placeholder="supervisor@care.com"></div>
+                            <div class="form-group"><label>Security Access Password</label><input type="text" id="supPassword" required placeholder="securepass123"></div>
+                            
+                            <div class="form-group">
+                                <label>Departmental Accessibility Rights Rules Matrix</label>
+                                <div class="perm-grid">
+                                    <div class="perm-row">
+                                        <span class="perm-label">Care Operations (Clients & Rota)</span>
+                                        <select class="perm-select" id="permCare"><option value="full">Full Access</option><option value="read">Read-Only</option><option value="none">None</option></select>
+                                    </div>
+                                    <div class="perm-row">
+                                        <span class="perm-label">Financial Ledger (Invoice Engine)</span>
+                                        <select class="perm-select" id="permFinance"><option value="full">Full Access</option><option value="read">Read-Only</option><option value="none">None</option></select>
+                                    </div>
+                                    <div class="perm-row">
+                                        <span class="perm-label">Human Resources (Field Staff)</span>
+                                        <select class="perm-select" id="permHR"><option value="full">Full Access</option><option value="read">Read-Only</option><option value="none">None</option></select>
+                                    </div>
+                                    <div class="perm-row">
+                                        <span class="perm-label">System Profiles (Global Settings)</span>
+                                        <select class="perm-select" id="permSystem"><option value="full">Full Access</option><option value="read">Read-Only</option><option value="none">None</option></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Create Managed Administrative Profile</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <h2>Corporate Privileges Security Ledger</h2>
+                        <table>
+                            <thead><tr><th>Administrator Details</th><th>Care Ops</th><th>Finance</th><th>HR Dept</th><th>System Cfg</th><th>Action</th></tr></thead>
+                            <tbody id="supervisorTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoices Ledger Sub-tab -->
+            <div id="adminSubInvoices" class="hidden">
+                <div class="grid-2 no-print">
+                    <div class="card">
+                        <h2>🧾 Generate New Invoice Asset</h2>
+                        <div class="form-group"><label>Target Billing Client Account</label><select id="genInvoiceClientSelect"></select></div>
+                        <div class="grid-2">
+                            <div class="form-group"><label>Billing Window Start</label><input type="date" id="genInvoiceStart"></div>
+                            <div class="form-group"><label>Billing Window End</label><input type="date" id="genInvoiceEnd"></div>
+                        </div>
+                        <button class="btn btn-success" id="btnRunInvoiceEngine" style="width:100%; justify-content:center; margin-top:5px;" onclick="executeInvoiceGenerationEngine()">⚙️ Run Generation Engine</button>
+                    </div>
+                    <div class="card">
+                        <h2>📋 Historical Invoices Archive Ledger</h2>
+                        <div style="max-height:220px; overflow-y:auto; border:1px solid var(--border); border-radius:4px;">
+                            <table>
+                                <thead><tr><th>Invoice Num</th><th>Client Target</th><th>Scope Range</th><th>Total Net</th><th>Status</th></tr></thead>
+                                <tbody id="historicalInvoicesLedgerBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card no-print" style="background:#edf2f7; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px;">
+                    <div>
+                        <span style="font-weight:bold; font-size:14px; color:var(--primary);">View Mode: </span>
+                        <select id="invoicePrintModeEngine" onchange="refreshActiveInvoicePrintDisplay()" style="width:auto; display:inline-block; padding:4px;">
+                            <option value="SUMMARY">Aggregated Invoice Format</option>
+                            <option value="DETAILED">Itemized Document Format</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <button class="btn btn-warning" id="btnToggleInvoiceSettle" onclick="toggleActiveInvoiceSettlementState()">🔀 Toggle Settle Status</button>
+                        <button class="btn btn-primary" onclick="window.print()">🖨️ Execute Print</button>
+                    </div>
+                </div>
+
+                <!-- Printable Area -->
+                <div class="card" id="printArea">
+                    <div id="printPaymentStatusBanner" class="payment-status-header status-unpaid">NO ACTIVE INVOICE CHOSEN</div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 12px;">
+                        <div>
+                            <h2 style="border:none; padding:0; margin:0; color:var(--primary); font-size: 24px;" id="lblPrintCompanyName">GALAXY CARE SYSTEMS</h2>
+                            <p style="font-size: 12px; color:#4a5568;" id="lblPrintCompanyMeta">Corporate Registry Data Missing</p>
+                            <p style="font-size: 13px; color:var(--secondary); font-weight:bold; margin-top:4px;" id="lblPrintStatementRange">Billing Scope Range</p>
+                        </div>
+                        <div style="text-align: right; font-size: 13px; color:#4a5568;">
+                            <strong>Official Enterprise Invoice Statement</strong><br>
+                            Invoice ID Token: <span id="lblPrintInvoiceId" style="font-weight:bold; color:black;">#N/A</span><br>
+                            Date Extracted: 2026-07-06
+                        </div>
+                    </div>
+                    <div class="grid-2" style="margin-bottom: 20px; font-size: 13px;">
+                        <div style="background:#f8fafc; padding:12px; border-radius:6px; border:1px solid var(--border);">
+                            <h3 style="font-size:11px; text-transform:uppercase; color:var(--secondary); margin-bottom:5px;">Recipient Remittance Profile</h3>
+                            <div id="printRecipientBlock" style="font-weight: bold; color:var(--primary); line-height:1.4;">Select record above.</div>
+                        </div>
+                        <div style="background:#f8fafc; padding:12px; border-radius:6px; border:1px solid var(--border);">
+                            <h3 style="font-size:11px; text-transform:uppercase; color:var(--secondary); margin-bottom:5px;">Issuer Headquarters</h3>
+                            <div id="printIssuerBlock" style="color:#4a5568; line-height:1.4;">Company Profile Configuration Blocks.</div>
+                        </div>
+                    </div>
+                    <div class="statement-summary">
+                        <div class="summary-item">Shifts Volume: <span id="aggregateVisitsCount">0</span> Visits</div>
+                        <div class="summary-item">Production Clock: <span id="aggregateHours">0.00</span> Hrs</div>
+                        <div class="summary-item">Accounts Balance: £<span id="aggregateBill">0.00</span></div>
+                    </div>
+                    <table>
+                        <thead id="invoiceTableHeaderBlock"><tr><th>Description</th><th>Units / Hours</th><th>Rate</th><th>Line Total</th></tr></thead>
+                        <tbody id="adminMasterTableBody"></tbody>
+                    </table>
+                    <div class="bank-details-block" id="printBankRemittanceBlock">
+                        <h4 style="color:var(--primary); font-size:13px; margin-bottom:4px; text-transform:uppercase;">BACS Settlement Instructions</h4>
+                        <p style="color:#4a5568;" id="lblPrintBankString">Wire transfer configuration targets.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accounts Portfolio -->
+            <div id="adminSubAccounts" class="hidden no-print">
+                <div class="card">
+                    <h2>📊 Enterprise Accounts Activity Portfolio Summary</h2>
+                    <div class="statement-summary" style="background:#f7fafc; margin-top:10px;">
+                        <div class="summary-item" style="color:var(--primary);">Invoices Locked: <span id="accTotalInvoicesCount">0</span> Records</div>
+                        <div class="summary-item" style="color:var(--success);">Gross Value Invoiced: £<span id="accTotalInvoicedRevenue">0.00</span></div>
+                    </div>
+                    <table>
+                        <thead><tr><th>Client ID</th><th>Client Profile Name</th><th>Total Invoices</th><th>Gross Value Billed</th><th>Action Link</th></tr></thead>
+                        <tbody id="accountsSummaryLedgerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Company Configuration Studio -->
+            <div id="adminSubCompany" class="hidden no-print">
+                <div class="card">
+                    <h2>⚙️ Enterprise Master Corporate Identity Suite</h2>
+                    <form onsubmit="saveCompanyProfileData(event)">
+                        <div class="grid-2" style="background:#ebf8ff; padding:15px; border-radius:6px; margin-bottom:15px; border:1px solid #bee3f8;">
+                            <div class="form-group">
+                                <label style="color:var(--primary);">Upload Corporate Image Logo Graphic</label>
+                                <input type="file" id="cfgCompanyLogoInput" accept="image/*" onchange="processCorporateLogoUpload(this)">
+                            </div>
+                            <div style="display:flex; justify-content:center; align-items:center;">
+                                <div class="logo-box-display dynamicLogoTarget" style="width:100px; height:100px; border-color:var(--primary);">PREVIEW</div>
+                            </div>
+                        </div>
+                        <div class="grid-2">
+                            <div class="form-group"><label>Corporate Registered Trading Name</label><input type="text" id="cfgCompanyName" required></div>
+                            <div class="form-group"><label>Company Registration Number (CRN)</label><input type="text" id="cfgCompanyNumber" required></div>
+                        </div>
+                        <div class="grid-3">
+                            <div class="form-group"><label>Support Line</label><input type="text" id="cfgCompanyPhone" required></div>
+                            <div class="form-group"><label>Email Address</label><input type="email" id="cfgCompanyEmail" required></div>
+                            <div class="form-group"><label>Web Domain</label><input type="text" id="cfgCompanyWebsite" required></div>
+                        </div>
+                        <div class="form-group"><label>Registered Office Physical Address Space</label><textarea id="cfgCompanyAddress" rows="2" required></textarea></div>
+                        <div class="grid-3" style="background:#edf2f7; padding:10px; border-radius:6px; margin-bottom:15px;">
+                            <div class="form-group"><label>Bank Name</label><input type="text" id="cfgBankName" required></div>
+                            <div class="form-group"><label>Account Number</label><input type="text" id="cfgBankAcc" required></div>
+                            <div class="form-group"><label>Sort Code</label><input type="text" id="cfgBankSort" required></div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Update Corporate Ledger Records</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= EMPLOYEE FIELD CARER PORTAL VIEW ================= -->
+        <div id="employeePortal" class="hidden no-print">
+            <div class="card" style="background: #ebf8ff; border: 1px solid #bee3f8;">
+                <h2>📱 Field Staff Duty Allocation Dashboard</h2>
+                <p style="font-size:14px; margin-bottom: 5px;">Welcome back to your workspace. Below are your assigned scheduling windows.</p>
+                <p style="font-size:12px; color:#4a5568;">Please execute EVV (Electronic Visit Verification) check-in and check-out on site.</p>
+            </div>
+
+            <div id="carerVisitsContainer">
+                <!-- Dynamically injected live field visit workflow modules go here -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CORE ARCHITECTURE JAVASCRIPT LOGIC ENGINE -->
+    <script>
+        let db = {
+            clients: [],
+            employees: [],
+            supervisors: [],
+            visits: [],
+            invoices: [],
+            company: {
+                name: "GALAXY CARE SYSTEMS LTD",
+                crn: "12345678",
+                phone: "0121 555 0199",
+                email: "operations@galaxycare.co.uk",
+                website: "www.galaxycare.co.uk",
+                address: "Suite 4B, Innovation Hub, Birmingham, B1 123",
+                bankName: "Barclays Corporate Banking",
+                accountNumber: "88776655",
+                sortCode: "20-45-11",
+                logoData: ""
+            }
+        };
+
+        let currentSessionUser = null; 
+        let selectedInvoiceId = null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDatabaseFromStorage();
+            seedInitialSystemData();
+            syncCompanyDomProfile();
+            renderAllLookupSelectMenus();
+        });
+
+        function loadDatabaseFromStorage() {
+            const raw = localStorage.getItem('DOMICILIARY_FRAMEWORK_DB');
+            if (raw) {
+                try {
+                    const parsed = JSON.parse(raw);
+                    if(parsed.clients) db = parsed;
+                } catch(e) { console.error("Database schema corruption error.", e); }
+            }
+        }
+
+        function saveDatabaseToStorage() {
+            localStorage.setItem('DOMICILIARY_FRAMEWORK_DB', JSON.stringify(db));
+        }
+
+        function seedInitialSystemData() {
+            if (db.supervisors.length === 0) {
+                db.supervisors.push({
+                    id: "sup_" + Date.now(),
+                    name: "System Director",
+                    email: "admin@care.com",
+                    password: "admin123",
+                    perms: { care: "full", finance: "full", hr: "full", system: "full" }
+                });
+            }
+            if (db.clients.length === 0) {
+                db.clients.push({ id: "cli_1", customId: "GCCS-1001", name: "Arthur Miller", phone: "0121 555 9920", rate: 45.00, address: "12 Oakridge Lane, Solihull, B91 3TY", plan: "Twice daily morning support regimen. Mobility assistance frame required." });
+                db.employees.push({ id: "emp_1", name: "Sarah Jenkins, RN", email: "carer@care.com", password: "123" });
+                
+                db.visits.push({
+                    id: "vst_1",
+                    clientId: "cli_1",
+                    employeeId: "emp_1",
+                    date: "2026-07-06",
+                    time: "08:00",
+                    hours: 1.5,
+                    cost: 67.50,
+                    status: "PENDING",
+                    clockIn: null,
+                    clockOut: null,
+                    notes: ""
+                });
+            }
+            saveDatabaseToStorage();
+        }
+
+        // --- EXTENDED GATEWAY ROUTER ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+
+            // 1. Check Administrative Matrix Registers
+            const matchedAdmin = db.supervisors.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
+            if (matchedAdmin) {
+                currentSessionUser = { type: 'ADMIN', data: matchedAdmin };
+                bootSystemInterface();
+                return;
+            }
+
+            // 2. Check Employee Staff Registers for Live Gateway Entry
+            const matchedCarer = db.employees.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
+            if (matchedCarer) {
+                currentSessionUser = { type: 'EMPLOYEE', data: matchedCarer };
+                bootSystemInterface();
+                return;
+            }
+
+            alert("Access Denied: Invalid cryptographic gateway credentials.");
+        }
+
+        function handleLogout() {
+            currentSessionUser = null;
+            document.getElementById('appContainer').classList.add('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('employeePortal').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
+
+        function bootSystemInterface() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('appContainer').classList.remove('hidden');
+            
+            if (currentSessionUser.type === 'ADMIN') {
+                document.getElementById('userGreeting').innerText = `Admin Space: ${currentSessionUser.data.name}`;
+                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('employeePortal').classList.add('hidden');
+                switchAdminSubView('home');
+                applyUIPermissionsMatrix();
+            } else if (currentSessionUser.type === 'EMPLOYEE') {
+                document.getElementById('userGreeting').innerText = `Field Professional: ${currentSessionUser.data.name}`;
+                document.getElementById('adminPanel').classList.add('hidden');
+                document.getElementById('employeePortal').classList.remove('hidden');
+                renderCarerPortalWorkspace();
+            }
+        }
+
+        function applyUIPermissionsMatrix() {
+            const p = currentSessionUser.data.perms;
+            document.getElementById('tabLinkClients').className = p.care === 'none' ? 'hidden' : 'nav-link';
+            document.getElementById('tabLinkEmployees').className = p.hr === 'none' ? 'hidden' : 'nav-link';
+            document.getElementById('tabLinkAdmins').className = p.system === 'none' ? 'hidden' : 'nav-link';
+            document.getElementById('tabLinkInvoices').className = p.finance === 'none' ? 'hidden' : 'nav-link';
+            document.getElementById('tabLinkAccounts').className = p.finance === 'none' ? 'hidden' : 'nav-link';
+            document.getElementById('tabLinkCompany').className = p.system === 'none' ? 'hidden' : 'nav-link';
+        }
+
+        // --- ADMIN TABS CONTROL ---
+        function switchAdminSubView(target) {
+            const views = ['home', 'clients', 'employees', 'admins', 'invoices', 'accounts', 'company'];
+            views.forEach(v => {
+                const el = document.getElementById(`adminSub${v.charAt(0).toUpperCase() + v.slice(1)}`);
+                if (el) el.classList.add('hidden');
+                const link = document.getElementById(`tabLink${v.charAt(0).toUpperCase() + v.slice(1)}`);
+                if (link) link.classList.remove('active');
+            });
+
+            document.getElementById(`adminSub${target.charAt(0).toUpperCase() + target.slice(1)}`).classList.remove('hidden');
+            const activeLink = document.getElementById(`tabLink${target.charAt(0).toUpperCase() + target.slice(1)}`);
+            if (activeLink) activeLink.classList.add('active');
+
+            if (target === 'home') renderDashboardDataStream();
+            if (target === 'clients') renderClientsModuleContext();
+            if (target === 'employees') renderEmployeesModuleContext();
+            if (target === 'admins') renderSupervisorsModuleContext();
+            if (target === 'invoices') renderInvoiceModuleContext();
+            if (target === 'accounts') renderAccountsPortfolioContext();
+            if (target === 'company') seedCompanyConfigurationFields();
+        }
+
+        // --- EMPLOYEE CARER ENGINE LOGIC ---
+        function renderCarerPortalWorkspace() {
+            const container = document.getElementById('carerVisitsContainer');
+            container.innerHTML = '';
+
+            // Query allocations locked explicitly to this logged-in carer session
+            const myVisits = db.visits.filter(v => v.employeeId === currentSessionUser.data.id);
+
+            if(myVisits.length === 0) {
+                container.innerHTML = `<div class="card" style="text-align:center; color:#718096;">No shift allocations documented for your profile.</div>`;
+                return;
+            }
+
+            // Sort chronically so nearest assignments show up on top
+            myVisits.sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+
+            myVisits.forEach(v => {
+                const client = db.clients.find(c => c.id === v.clientId);
+                if(!client) return;
+
+                const card = document.createElement('div');
+                card.className = "live-visit-card";
+                
+                let actionInterfaceHTML = '';
+                
+                if (v.status === 'PENDING') {
+                    actionInterfaceHTML = `
+                        <button class="btn btn-success" onclick="executeCarerClockIn('${v.id}')">▶ Start Shift (Clock-In)</button>
+                    `;
+                } else if (v.status === 'ACTIVE') {
+                    actionInterfaceHTML = `
+                        <div style="background:#fffaf0; border:1px solid #feebc8; padding:10px; border-radius:6px; margin-top:10px;">
+                            <p style="font-size:12px; font-weight:bold; color:var(--warning); margin-bottom:8px;">⏱️ Visit Currently Active since: ${v.clockIn}</p>
+                            <div class="form-group">
+                                <label style="color:var(--danger)">Mandatory Handover clinical care Notes *</label>
+                                <textarea id="liveNotesInput_${v.id}" rows="3" required placeholder="Write clinical visit summary details here before finishing shift task..."></textarea>
+                            </div>
+                            <button class="btn btn-danger" style="width:100%; justify-content:center;" onclick="executeCarerClockOut('${v.id}')">🛑 Stop Shift & Submit Log</button>
+                        </div>
+                    `;
+                } else if (v.status === 'COMPLETED') {
+                    actionInterfaceHTML = `
+                        <div style="margin-top:10px; font-size:13px; color:#4a5568; line-height:1.4;">
+                            <strong>Logged Verification Data:</strong><br>
+                            🏁 In: <code>${v.clockIn}</code> | Out: <code>${v.clockOut}</code><br>
+                            📝 <em>${v.notes}</em>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="live-visit-header">
+                        <div>
+                            <span class="badge badge-${v.status.toLowerCase()}">${v.status}</span>
+                            <strong style="margin-left:8px; font-size:16px;">${client.name}</strong>
+                        </div>
+                        <div style="text-align:right; font-size:13px; font-weight:bold; color:var(--primary);">
+                            ${v.date} @ ${v.time}
+                        </div>
+                    </div>
+                    <div style="font-size:13px; margin-bottom:10px; color:#4a5568;">
+                        <strong>Address:</strong> ${client.address}<br>
+                        <strong>Directives Plan:</strong> <span style="color:#2b6cb0;">${client.plan}</span><br>
+                        <strong>Scheduled Duration:</strong> ${v.hours} hours
+                    </div>
+                    ${actionInterfaceHTML}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function executeCarerClockIn(visitId) {
+            const idx = db.visits.findIndex(v => v.id === visitId);
+            if (idx > -1) {
+                const now = new Date();
+                db.visits[idx].clockIn = now.toLocaleDateString() + " " + now.toTimeString().split(' ')[0];
+                db.visits[idx].status = 'ACTIVE';
+                saveDatabaseToStorage();
+                renderCarerPortalWorkspace();
+            }
+        }
+
+        function executeCarerClockOut(visitId) {
+            const idx = db.visits.findIndex(v => v.id === visitId);
+            if (idx === -1) return;
+
+            const notesVal = document.getElementById(`liveNotesInput_${visitId}`).value.trim();
+            
+            // Core Mandatory Guard Clause validation to enforce safety protocols
+            if (!notesVal || notesVal.length < 5) {
+                alert("Validation Exception: Mandatory Visit notes entry missing. You must enter detailed descriptions to register completion.");
+                return;
+            }
+
+            const now = new Date();
+            db.visits[idx].clockOut = now.toLocaleDateString() + " " + now.toTimeString().split(' ')[0];
+            db.visits[idx].notes = notesVal;
+            db.visits[idx].status = 'COMPLETED';
+            
+            saveDatabaseToStorage();
+            alert("Electronic Visit Logs saved and committed to corporate administration ledger.");
+            renderCarerPortalWorkspace();
+        }
+
+        // --- CORE RETAINED ADMIN OPERATIONS BLOCKS ---
+        function renderDashboardDataStream() {
+            document.getElementById('statClientsCount').innerText = `${db.clients.length} Clients`;
+            document.getElementById('statStaffCount').innerText = `${db.employees.length} Carers`;
+            const pendingShifts = db.visits.filter(v => v.status === 'PENDING').length;
+            document.getElementById('statPendingCount').innerText = `${pendingShifts} Shifts`;
+            const grossRevenue = db.visits.reduce((acc, curr) => acc + (curr.status === 'COMPLETED' ? curr.cost : 0), 0);
+            document.getElementById('statGrossRevenue').innerText = grossRevenue.toFixed(2);
+
+            const streamTable = document.getElementById('dashboardLiveTable');
+            streamTable.innerHTML = '';
+            const sortedVisits = [...db.visits].reverse().slice(0, 8);
+            sortedVisits.forEach(v => {
+                const client = db.clients.find(c => c.id === v.clientId);
+                const carer = db.employees.find(e => e.id === v.employeeId);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${client ? client.name : 'Unknown'}</strong></td>
+                    <td>${carer ? carer.name : 'Unassigned'}</td>
+                    <td>${v.date} @ ${v.time}</td>
+                    <td><span class="badge badge-${v.status.toLowerCase()}">${v.status}</span></td>
+                `;
+                streamTable.appendChild(tr);
+            });
+        }
+
+        function renderClientsModuleContext() {
+            renderAllLookupSelectMenus();
+            const body = document.getElementById('clientTableBody');
+            body.innerHTML = '';
+            db.clients.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><code>${c.customId}</code></td>
+                    <td><strong>${c.name}</strong></td>
+                    <td>${c.phone}</td>
+                    <td>£${parseFloat(c.rate).toFixed(2)}/hr</td>
+                    <td><small>${c.address}</small></td>
+                    <td>
+                        <button class="btn btn-warning" style="padding:4px 8px; font-size:11px;" onclick="loadClientToForm('${c.id}')">Edit</button>
+                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteClientProfile('${c.id}')">Delete</button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+
+            const visitsBody = document.getElementById('individualVisitsTableBody');
+            visitsBody.innerHTML = '';
+            [...db.visits].reverse().forEach(v => {
+                const client = db.clients.find(c => c.id === v.clientId);
+                const carer = db.employees.find(e => e.id === v.employeeId);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${v.date}</strong> <small>@ ${v.time}</small></td>
+                    <td>${client ? client.name : 'N/A'}</td>
+                    <td>${carer ? carer.name : 'N/A'}</td>
+                    <td>${v.hours} Hrs</td>
+                    <td>£${v.cost.toFixed(2)}</td>
+                    <td><span class="badge badge-${v.status.toLowerCase()}">${v.status}</span></td>
+                    <td>
+                        ${v.status === 'PENDING' ? `<button class="btn btn-success" style="padding:3px 6px; font-size:11px;" onclick="changeVisitExecutionStatus('${v.id}','COMPLETED')">Verify</button>` : ''}
+                        <button class="btn btn-danger" style="padding:3px 6px; font-size:11px;" onclick="purgeVisitRecord('${v.id}')">Purge</button>
+                    </td>
+                `;
+                visitsBody.appendChild(tr);
+            });
+        }
+
+        function saveClientProfile(e) {
+            e.preventDefault();
+            const internalId = document.getElementById('editClientInternalId').value;
+            const payload = {
+                customId: document.getElementById('clientCustomId').value.trim(),
+                name: document.getElementById('clientName').value.trim(),
+                phone: document.getElementById('clientPhone').value.trim(),
+                rate: parseFloat(document.getElementById('clientRate').value),
+                address: document.getElementById('clientAddress').value.trim(),
+                plan: document.getElementById('clientPlan').value.trim()
+            };
+            if (internalId) {
+                const targetIdx = db.clients.findIndex(c => c.id === internalId);
+                if (targetIdx > -1) db.clients[targetIdx] = { ...db.clients[targetIdx], ...payload };
+            } else {
+                payload.id = "cli_" + Date.now();
+                db.clients.push(payload);
+            }
+            saveDatabaseToStorage();
+            document.getElementById('clientForm').reset();
+            document.getElementById('editClientInternalId').value = '';
+            renderClientsModuleContext();
+        }
+
+        function loadClientToForm(id) {
+            const c = db.clients.find(cli => cli.id === id);
+            if (!c) return;
+            document.getElementById('editClientInternalId').value = c.id;
+            document.getElementById('clientCustomId').value = c.customId;
+            document.getElementById('clientName').value = c.name;
+            document.getElementById('clientPhone').value = c.phone;
+            document.getElementById('clientRate').value = c.rate;
+            document.getElementById('clientAddress').value = c.address;
+            document.getElementById('clientPlan').value = c.plan;
+        }
+
+        function deleteClientProfile(id) {
+            if (confirm("Confirm removal of client?")) {
+                db.clients = db.clients.filter(c => c.id !== id);
+                saveDatabaseToStorage();
+                renderClientsModuleContext();
+            }
+        }
+
+        function renderEmployeesModuleContext() {
+            const body = document.getElementById('employeeTableBody');
+            body.innerHTML = '';
+            db.employees.forEach(e => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${e.name}</strong></td>
+                    <td><code>${e.email}</code></td>
+                    <td>
+                        <button class="btn btn-warning" style="padding:4px 8px; font-size:11px;" onclick="loadEmployeeToForm('${e.id}')">Edit</button>
+                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteEmployeeProfile('${e.id}')">Remove</button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function saveEmployeeProfile(e) {
+            e.preventDefault();
+            const internalId = document.getElementById('editEmpInternalId').value;
+            const payload = {
+                name: document.getElementById('empName').value.trim(),
+                email: document.getElementById('empEmail').value.trim(),
+                password: document.getElementById('empPassword').value
+            };
+            if (internalId) {
+                const targetIdx = db.employees.findIndex(emp => emp.id === internalId);
+                if (targetIdx > -1) db.employees[targetIdx] = { ...db.employees[targetIdx], ...payload };
+            } else {
+                payload.id = "emp_" + Date.now();
+                db.employees.push(payload);
+            }
+            saveDatabaseToStorage();
+            document.getElementById('employeeForm').reset();
+            document.getElementById('editEmpInternalId').value = '';
+            renderEmployeesModuleContext();
+        }
+
+        function loadEmployeeToForm(id) {
+            const e = db.employees.find(emp => emp.id === id);
+            if (!e) return;
+            document.getElementById('editEmpInternalId').value = e.id;
+            document.getElementById('empName').value = e.name;
+            document.getElementById('empEmail').value = e.email;
+            document.getElementById('empPassword').value = e.password;
+        }
+
+        function deleteEmployeeProfile(id) {
+            if (confirm("Revoke credentials entry for this field professional?")) {
+                db.employees = db.employees.filter(e => e.id !== id);
+                saveDatabaseToStorage();
+                renderEmployeesModuleContext();
+            }
+        }
+
+        function generateBulkRotas(e) {
+            e.preventDefault();
+            const clientId = document.getElementById('rotaClientSelect').value;
+            const employeeId = document.getElementById('rotaEmployeeSelect').value;
+            const startStr = document.getElementById('rotaStartDate').value;
+            const endStr = document.getElementById('rotaEndDate').value;
+            const timeStr = document.getElementById('rotaTime').value;
+            const hours = parseInt(document.getElementById('rotaTargetHours').value) || 0;
+            const mins = parseInt(document.getElementById('rotaTargetMins').value) || 0;
+
+            const clientObj = db.clients.find(c => c.id === clientId);
+            if (!clientObj) return;
+
+            const baseHours = hours + (mins / 60);
+            const calculatedCost = baseHours * clientObj.rate;
+            const pickedDays = Array.from(document.querySelectorAll('.weekDayPick:checked')).map(el => parseInt(el.value));
+
+            let currentDate = new Date(startStr);
+            const endDate = new Date(endStr);
+            while (currentDate <= endDate) {
+                if (pickedDays.includes(currentDate.getDay())) {
+                    db.visits.push({
+                        id: "vst_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
+                        clientId: clientId,
+                        employeeId: employeeId,
+                        date: currentDate.toISOString().split('T')[0],
+                        time: timeStr,
+                        hours: baseHours,
+                        cost: calculatedCost,
+                        status: "PENDING",
+                        clockIn: null,
+                        clockOut: null,
+                        notes: ""
+                    });
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            saveDatabaseToStorage();
+            renderClientsModuleContext();
+        }
+
+        function changeVisitExecutionStatus(visitId, status) {
+            const idx = db.visits.findIndex(v => v.id === visitId);
+            if (idx > -1) {
+                db.visits[idx].status = status;
+                saveDatabaseToStorage();
+                renderClientsModuleContext();
+            }
+        }
+
+        function purgeVisitRecord(visitId) {
+            if (confirm("Erase tracking record?")) {
+                db.visits = db.visits.filter(v => v.id !== visitId);
+                saveDatabaseToStorage();
+                renderClientsModuleContext();
+            }
+        }
+
+        // --- REST OF ADMIN PRIVILEGES CONTROLS ---
+        function renderSupervisorsModuleContext() {
+            const body = document.getElementById('supervisorTableBody');
+            body.innerHTML = '';
+            db.supervisors.forEach(s => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${s.name}</strong><br><small>${s.email}</small></td>
+                    <td><span class="badge">${s.perms.care.toUpperCase()}</span></td>
+                    <td><span class="badge">${s.perms.finance.toUpperCase()}</span></td>
+                    <td><span class="badge">${s.perms.hr.toUpperCase()}</span></td>
+                    <td><span class="badge">${s.perms.system.toUpperCase()}</span></td>
+                    <td><button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" ${s.email === 'admin@care.com'?'disabled':''} onclick="deleteSupervisorProfile('${s.id}')">Revoke</button></td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function saveSupervisorProfile(e) {
+            e.preventDefault();
+            db.supervisors.push({
+                id: "sup_" + Date.now(),
+                name: document.getElementById('supName').value.trim(),
+                email: document.getElementById('supEmail').value.trim(),
+                password: document.getElementById('supPassword').value,
+                perms: {
+                    care: document.getElementById('permCare').value,
+                    finance: document.getElementById('permFinance').value,
+                    hr: document.getElementById('permHR').value,
+                    system: document.getElementById('permSystem').value
+                }
+            });
+            saveDatabaseToStorage();
+            document.getElementById('supervisorForm').reset();
+            renderSupervisorsModuleContext();
+        }
+
+        function deleteSupervisorProfile(id) {
+            if(confirm("Confirm erasure?")) {
+                db.supervisors = db.supervisors.filter(s => s.id !== id);
+                saveDatabaseToStorage();
+                renderSupervisorsModuleContext();
+            }
+        }
+
+        function renderInvoiceModuleContext() {
+            renderAllLookupSelectMenus();
+            const ledger = document.getElementById('historicalInvoicesLedgerBody');
+            ledger.innerHTML = '';
+            db.invoices.forEach(inv => {
+                const tr = document.createElement('tr');
+                tr.className = `clickable-row ${selectedInvoiceId === inv.id ? 'selected-row' : ''}`;
+                tr.setAttribute('onclick', `selectActiveInvoiceManifest('${inv.id}')`);
+                tr.innerHTML = `<td><strong>${inv.invoiceNumber}</strong></td><td>${inv.clientName}</td><td><small>${inv.start}/${inv.end}</small></td><td><strong>£${inv.grossTotal.toFixed(2)}</strong></td><td><span class="badge badge-${inv.status==='PAID'?'completed':'pending'}">${inv.status}</span></td>`;
+                ledger.appendChild(tr);
+            });
+            refreshActiveInvoicePrintDisplay();
+        }
+
+        function executeInvoiceGenerationEngine() {
+            const clientId = document.getElementById('genInvoiceClientSelect').value;
+            const start = document.getElementById('genInvoiceStart').value;
+            const end = document.getElementById('genInvoiceEnd').value;
+            const clientObj = db.clients.find(c => c.id === clientId);
+            if (!clientObj) return;
+
+            const filteredVisits = db.visits.filter(v => v.clientId === clientId && v.status === 'COMPLETED' && v.date >= start && v.date <= end);
+            if(filteredVisits.length === 0) { alert("Zero verified elements found."); return; }
+
+            const totalHours = filteredVisits.reduce((acc, v) => acc + v.hours, 0);
+            const grossBill = filteredVisits.reduce((acc, v) => acc + v.cost, 0);
+
+            const newInvoice = {
+                id: "inv_" + Date.now(),
+                invoiceNumber: "INV-2026-" + Math.floor(100000 + Math.random() * 900000),
+                clientId: clientId,
+                clientName: clientObj.name,
+                clientAddress: clientObj.address,
+                clientRate: clientObj.rate,
+                start: start,
+                end: end,
+                totalVisits: filteredVisits.length,
+                totalHours: totalHours,
+                grossTotal: grossBill,
+                status: "UNPAID",
+                items: filteredVisits.map(v => ({ date: v.date, time: v.time, carerName: 'Specialist Staff', hours: v.hours, lineTotal: v.cost }))
+            };
+
+            db.invoices.push(newInvoice);
+            saveDatabaseToStorage();
+            selectedInvoiceId = newInvoice.id;
+            renderInvoiceModuleContext();
+        }
+
+        function selectActiveInvoiceManifest(id) { selectedInvoiceId = id; renderInvoiceModuleContext(); }
+        function toggleActiveInvoiceSettlementState() {
+            if(!selectedInvoiceId) return;
+            const idx = db.invoices.findIndex(i => i.id === selectedInvoiceId);
+            if (idx > -1) { db.invoices[idx].status = db.invoices[idx].status === 'PAID' ? 'UNPAID' : 'PAID'; saveDatabaseToStorage(); renderInvoiceModuleContext(); }
+        }
+
+        function refreshActiveInvoicePrintDisplay() {
+            if (!selectedInvoiceId) return;
+            const inv = db.invoices.find(i => i.id === selectedInvoiceId);
+            if (!inv) return;
+            document.getElementById('lblPrintInvoiceId').innerText = inv.invoiceNumber;
+            document.getElementById('printRecipientBlock').innerHTML = `${inv.clientName.toUpperCase()}<br>${inv.clientAddress}`;
+            document.getElementById('aggregateVisitsCount').innerText = inv.totalVisits;
+            document.getElementById('aggregateHours').innerText = inv.totalHours.toFixed(2);
+            document.getElementById('aggregateBill').innerText = inv.grossTotal.toFixed(2);
+
+            const body = document.getElementById('adminMasterTableBody');
+            body.innerHTML = `<tr><td>Domiciliary Operations Care Block</td><td>${inv.totalHours.toFixed(2)} Hrs</td><td>£${inv.clientRate}/hr</td><td>£${inv.grossTotal.toFixed(2)}</td></tr>`;
+        }
+
+        function renderAccountsPortfolioContext() {
+            const body = document.getElementById('accountsSummaryLedgerTableBody');
+            body.innerHTML = '';
+            db.clients.forEach(c => {
+                const clientInvoices = db.invoices.filter(i => i.clientId === c.id);
+                const billedSum = clientInvoices.reduce((acc, i) => acc + i.grossTotal, 0);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td><code>${c.customId}</code></td><td><strong>${c.name}</strong></td><td>${clientInvoices.length} Issued</td><td><strong>£${billedSum.toFixed(2)}</strong></td><td><button class="btn btn-primary" style="padding:4px 8px; font-size:11px;" onclick="switchAdminSubView('invoices')">Review</button></td>`;
+                body.appendChild(tr);
+            });
+        }
+
+        function seedCompanyConfigurationFields() {
+            document.getElementById('cfgCompanyName').value = db.company.name;
+            document.getElementById('cfgCompanyNumber').value = db.company.crn;
+            document.getElementById('cfgCompanyPhone').value = db.company.phone;
+            document.getElementById('cfgCompanyEmail').value = db.company.email;
+            document.getElementById('cfgCompanyWebsite').value = db.company.website;
+            document.getElementById('cfgCompanyAddress').value = db.company.address;
+        }
+
+        function saveCompanyProfileData(e) {
+            e.preventDefault();
+            db.company.name = document.getElementById('cfgCompanyName').value;
+            saveDatabaseToStorage();
+            syncCompanyDomProfile();
+            alert("Updated.");
+        }
+
+        function processCorporateLogoUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) { db.company.logoData = e.target.result; saveDatabaseToStorage(); syncCompanyDomProfile(); }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function syncCompanyDomProfile() {
+            const c = db.company;
+            document.getElementById('headerCorporateTitle').innerText = c.name;
+            const targets = document.querySelectorAll('.dynamicLogoTarget');
+            targets.forEach(t => {
+                if (c.logoData) t.innerHTML = `<img src="${c.logoData}" class="logo-preview-img">`;
+            });
+        }
+
+        function renderAllLookupSelectMenus() {
+            const clientMenus = [document.getElementById('rotaClientSelect'), document.getElementById('genInvoiceClientSelect')];
+            const carerMenus = [document.getElementById('rotaEmployeeSelect')];
+            clientMenus.forEach(menu => {
+                if(!menu) return; menu.innerHTML = '';
+                db.clients.forEach(c => { const opt = document.createElement('option'); opt.value = c.id; opt.innerText = c.name; menu.appendChild(opt); });
+            });
+            carerMenus.forEach(menu => {
+                if(!menu) return; menu.innerHTML = '';
+                db.employees.forEach(e => { const opt = document.createElement('option'); opt.value = e.id; opt.innerText = e.name; menu.appendChild(opt); });
+            });
+        }
+    </script>
+</body>
+</html>
