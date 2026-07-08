@@ -107,11 +107,9 @@
         .perm-label { font-size: 12px; font-weight: bold; color: #4a5568; }
         .perm-select { width: auto; padding: 2px 6px; font-size: 12px; }
 
-        /* Mobile Responsive Carer Layout styles */
         .live-visit-card { background: #fff; border: 2px solid var(--secondary); border-radius: 8px; padding: 15px; margin-bottom: 15px; }
         .live-visit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed var(--border); }
 
-        /* Print Area Formatting styles */
         .report-notes-box { background: #f8fafc; border: 1px solid var(--border); padding: 8px; border-radius: 4px; font-size: 13px; margin-top: 4px; color: #4a5568; }
 
         @media print {
@@ -457,544 +455,293 @@
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 12px;">
                         <div>
                             <h2 style="border:none; padding:0; margin:0; color:var(--primary); font-size: 22px;">HISTORICAL CARE WORK LOGS STATEMENT</h2>
-                            <p style="font-size: 13px; color:var(--secondary); font-weight:bold; margin-top:4px;" id="lblReportCriteriaHeader">Scope Window: Full History</p>
+                            <p style="font-size: 13px; color:#4a5568;" id="lblReportMetaInfo">Extracted logs registry details.</p>
                         </div>
                         <div style="text-align: right; font-size: 13px; color:#4a5568;">
-                            <strong>Issuer Agency:</strong> <span id="lblReportIssuerName">Galaxy Care</span><br>
-                            <strong>Generated:</strong> 2026-07-06
+                            <strong>Confidential Health Log Copy</strong><br>
+                            Extracted: 2026-07-08
                         </div>
                     </div>
-                    
-                    <div id="reportClientDetailsBlock" style="background:#f8fafc; padding:12px; border-radius:6px; border:1px solid var(--border); font-size:13px; margin-bottom:20px; line-height:1.4;">
-                        <strong>Subject Record Recipient Details will show up here.</strong>
-                    </div>
-
-                    <table style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th style="width:15%;">Date & Time</th>
-                                <th style="width:20%;">Assigned Professional</th>
-                                <th style="width:15%;">EVV Timestamps</th>
-                                <th style="width:50%;">Clinical Care Handover Notes Log</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reportOutputTableBody">
-                            <tr><td colspan="4" style="text-align:center; color:#718096;">Execute search filter settings above to parse data table.</td></tr>
-                        </tbody>
-                    </table>
-
-                    <div class="no-print" style="margin-top:20px; text-align:right;">
-                        <button class="btn btn-success" onclick="window.print()">🖨️ Print Document Dossier</button>
+                    <div id="reportPrintContent">
+                        <p style="color:#718096; font-style:italic;">Run report configuration tool options above to build this view.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Company Configuration Studio -->
+            <!-- Company Profile Studio Sub-tab (BUG FIXED HERE) -->
             <div id="adminSubCompany" class="hidden no-print">
-                <div class="card">
-                    <h2>⚙️ Enterprise Master Corporate Identity Suite</h2>
-                    <form onsubmit="saveCompanyProfileData(event)">
-                        <div class="grid-2" style="background:#ebf8ff; padding:15px; border-radius:6px; margin-bottom:15px; border:1px solid #bee3f8;">
+                <div class="grid-2">
+                    <div class="card">
+                        <h2>⚙️ Company Branding Properties</h2>
+                        <form onsubmit="saveCompanyProfileSettings(event)">
                             <div class="form-group">
-                                <label style="color:var(--primary);">Upload Corporate Image Logo Graphic</label>
-                                <input type="file" id="cfgCompanyLogoInput" accept="image/*" onchange="processCorporateLogoUpload(this)">
+                                <label>Corporate Legal Name</label>
+                                <input type="text" id="cfgCompName" required>
                             </div>
-                            <div style="display:flex; justify-content:center; align-items:center;">
-                                <div class="logo-box-display dynamicLogoTarget" style="width:100px; height:100px; border-color:var(--primary);">PREVIEW</div>
+                            <div class="form-group">
+                                <label>Corporate Short Title (Logo Text)</label>
+                                <input type="text" id="cfgCompLogoText" required>
                             </div>
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group"><label>Corporate Registered Trading Name</label><input type="text" id="cfgCompanyName" required></div>
-                            <div class="form-group"><label>Company Registration Number (CRN)</label><input type="text" id="cfgCompanyNumber" required></div>
-                        </div>
-                        <div class="grid-3">
-                            <div class="form-group"><label>Support Line</label><input type="text" id="cfgCompanyPhone" required></div>
-                            <div class="form-group"><label>Email Address</label><input type="email" id="cfgCompanyEmail" required></div>
-                            <div class="form-group"><label>Web Domain</label><input type="text" id="cfgCompanyWebsite" required></div>
-                        </div>
-                        <div class="form-group"><label>Registered Office Physical Address Space</label><textarea id="cfgCompanyAddress" rows="2" required></textarea></div>
-                        <div class="grid-3" style="background:#edf2f7; padding:10px; border-radius:6px; margin-bottom:15px;">
-                            <div class="form-group"><label>Bank Name</label><input type="text" id="cfgBankName" required></div>
-                            <div class="form-group"><label>Account Number</label><input type="text" id="cfgBankAcc" required></div>
-                            <div class="form-group"><label>Sort Code</label><input type="text" id="cfgBankSort" required></div>
-                        </div>
-                        <button type="submit" class="btn btn-success">Update Corporate Ledger Records</button>
-                    </form>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Company Phone Number</label>
+                                    <input type="text" id="cfgCompPhone" required placeholder="0121 555 0199">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company Registration / Tax Number</label>
+                                    <input type="text" id="cfgCompRegNo" required placeholder="UK-REG-88371">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Registration Identity Meta Line</label>
+                                <input type="text" id="cfgCompMeta" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Registered Headquarters Address</label>
+                                <textarea id="cfgCompAddress" rows="3" required></textarea>
+                            </div>
+                            <div class="grid-2">
+                                <div class="form-group"><label>Bank Routing Code / Sort</label><input type="text" id="cfgBankSort" required></div>
+                                <div class="form-group"><label>Bank Ledger Number</label><input type="text" id="cfgBankAcc" required></div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Save Corporate Parameters</button>
+                        </form>
+                    </div>
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: #edf2f7;">
+                        <div class="logo-box-display dynamicLogoTarget" style="width: 120px; height: 120px; font-size: 16px; margin-bottom: 15px;">GALAXY CARE</div>
+                        <h3 id="previewCompName" style="color: var(--primary);">GALAXY CARE SYSTEMS</h3>
+                        <p id="previewCompMeta" style="font-size:12px; color: #718096; margin-top: 5px;">Corporate Core Architecture Active</p>
+                        <p id="previewCompContact" style="font-size:12px; color: #4a5568; margin-top: 5px; font-weight: bold;"></p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= EMPLOYEE FIELD CARER PORTAL VIEW ================= -->
-        <div id="employeePortal" class="hidden no-print">
-            <div class="card" style="background: #ebf8ff; border: 1px solid #bee3f8;">
-                <h2>📱 Field Staff Duty Allocation Dashboard</h2>
-                <p style="font-size:14px; margin-bottom: 5px;">Welcome back to your workspace. Below are your assigned scheduling windows.</p>
-                <p style="font-size:12px; color:#4a5568;">Completed shifts automatically clear from this display dashboard profile once logs are saved.</p>
+        <!-- ================= FIELD CARER INTERFACE VIEW ================= -->
+        <div id="carerPanel" class="hidden">
+            <div class="card" style="background: #e2e8f0;">
+                <h2 style="border-left-color: var(--primary);">Welcome Back, Field Professional</h2>
+                <p style="font-size: 14px;">Review and access scheduled community clinical slots below. You can seamlessly log and commit care session observations on the go.</p>
             </div>
-
-            <div id="carerVisitsContainer">
-                <!-- Dynamically injected live field visit workflow modules go here -->
-            </div>
+            <div id="carerVisitsLayout"></div>
         </div>
-
     </div>
 
-    <!-- CORE ARCHITECTURE JAVASCRIPT LOGIC ENGINE -->
+    <!-- ================= ENTERPRISE APPLICATION JAVASCRIPT ARCHITECTURE ================= -->
     <script>
-        let db = {
+        let systemState = {
+            authenticatedUser: null,
+            companyProfile: {
+                name: "GALAXY CARE SYSTEMS LTD",
+                logoText: "GALAXY CARE",
+                phone: "0121 555 0199",
+                regNumber: "REG-88371-2026",
+                meta: "CQC Registered Framework Provider - ID: REG-88371-2026",
+                address: "Unit 4B, Innovation Hub, Enterprise Way, Birmingham, B1 2BB",
+                bankSort: "20-45-83",
+                bankAcc: "88374102"
+            },
             clients: [],
             employees: [],
             supervisors: [],
             visits: [],
             invoices: [],
-            company: {
-                name: "GALAXY CARE SYSTEMS LTD",
-                crn: "12345678",
-                phone: "0121 555 0199",
-                email: "operations@galaxycare.co.uk",
-                website: "www.galaxycare.co.uk",
-                address: "Suite 4B, Innovation Hub, Birmingham, B1 123",
-                bankName: "Barclays Corporate Banking",
-                accountNumber: "88776655",
-                sortCode: "20-45-11",
-                logoData: ""
-            }
+            selectedInvoiceId: null
         };
 
-        let currentSessionUser = null; 
-        let selectedInvoiceId = null;
+        function runDatabaseSeeder() {
+            systemState.clients = [
+                { id: "c1", customId: "GCCS-101", name: "Arthur Miller", phone: "0121 555 9920", rate: 45.00, address: "12 Meadow Lane, Solihull, B91 3AA", plan: "Twice daily structural support. Blood pressure indexing parameters required." },
+                { id: "c2", customId: "GCCS-102", name: "Beatrice Vance", phone: "0121 443 1192", rate: 50.00, address: "88 Oakwood Court, Harborne, B17 9PP", plan: "Mobility hoist governance protocols. Medication ingestion recording schedules." }
+            ];
 
-        window.addEventListener('DOMContentLoaded', () => {
-            loadDatabaseFromStorage();
-            seedInitialSystemData();
-            syncCompanyDomProfile();
-            renderAllLookupSelectMenus();
-        });
+            systemState.employees = [
+                { id: "e1", name: "Sarah Jenkins, RN", email: "sarah@care.com", password: "password1" },
+                { id: "e2", name: "David Gandy, NVQ3", email: "david@care.com", password: "password1" }
+            ];
 
-        function loadDatabaseFromStorage() {
-            const raw = localStorage.getItem('DOMICILIARY_FRAMEWORK_DB');
-            if (raw) {
-                try {
-                    const parsed = JSON.parse(raw);
-                    if(parsed.clients) db = parsed;
-                } catch(e) { console.error("Database schema corruption error.", e); }
+            systemState.supervisors = [
+                { id: "s1", name: "Admin Director", email: "admin@care.com", password: "admin", permCare: "full", permFinance: "full", permHR: "full", permSystem: "full" }
+            ];
+
+            let today = new Date();
+            for(let i = -5; i <= 2; i++) {
+                let shiftDate = new Date();
+                shiftDate.setDate(today.getDate() + i);
+                let dateStr = shiftDate.toISOString().split('T')[0];
+
+                systemState.visits.push({
+                    id: "v_seed_a_" + i,
+                    clientId: "c1",
+                    employeeId: "e1",
+                    date: dateStr,
+                    time: "08:30",
+                    hours: 1,
+                    mins: 30,
+                    rateAtBilling: 45.00,
+                    status: i < 0 ? "COMPLETED" : "PENDING",
+                    notes: i < 0 ? "Standard check completed. Dietary fluid targets reached securely." : ""
+                });
+
+                systemState.visits.push({
+                    id: "v_seed_b_" + i,
+                    clientId: "c2",
+                    employeeId: "e2",
+                    date: dateStr,
+                    time: "12:15",
+                    hours: 2,
+                    mins: 0,
+                    rateAtBilling: 50.00,
+                    status: i < 0 ? "COMPLETED" : "PENDING",
+                    notes: i < 0 ? "Clinical transfers executed with hoist architecture successfully." : ""
+                });
+            }
+            saveStateToDisk();
+        }
+
+        function saveStateToDisk() {
+            localStorage.setItem("DOMICILIARY_PORTAL_STATE_2026", JSON.stringify(systemState));
+        }
+
+        function loadStateFromDisk() {
+            let data = localStorage.getItem("DOMICILIARY_PORTAL_STATE_2026");
+            if (data) {
+                systemState = JSON.parse(data);
+            } else {
+                runDatabaseSeeder();
             }
         }
 
-        function saveDatabaseToStorage() {
-            localStorage.setItem('DOMICILIARY_FRAMEWORK_DB', JSON.stringify(db));
-        }
+        function switchAdminSubView(targetSub) {
+            const tabs = ['home', 'clients', 'employees', 'admins', 'invoices', 'accounts', 'reports', 'company'];
+            tabs.forEach(t => {
+                const view = document.getElementById('adminSub' + t.charAt(0).toUpperCase() + t.slice(1));
+                const link = document.getElementById('tabLink' + t.charAt(0).toUpperCase() + t.slice(1));
+                if(view) view.classList.add('hidden');
+                if(link) link.classList.remove('active');
+            });
 
-        function seedInitialSystemData() {
-            if (db.supervisors.length === 0) {
-                db.supervisors.push({
-                    id: "sup_" + Date.now(),
-                    name: "System Director",
-                    email: "admin@care.com",
-                    password: "admin123",
-                    perms: { care: "full", finance: "full", hr: "full", system: "full" }
-                });
-            }
-            if (db.clients.length === 0) {
-                db.clients.push({ id: "cli_1", customId: "GCCS-1001", name: "Arthur Miller", phone: "0121 555 9920", rate: 45.00, address: "12 Oakridge Lane, Solihull, B91 3TY", plan: "Twice daily morning support regimen. Mobility assistance frame required." });
-                db.employees.push({ id: "emp_1", name: "Sarah Jenkins, RN", email: "carer@care.com", password: "123" });
-                
-                db.visits.push({
-                    id: "vst_1",
-                    clientId: "cli_1",
-                    employeeId: "emp_1",
-                    date: "2026-07-06",
-                    time: "08:00",
-                    hours: 1.5,
-                    cost: 67.50,
-                    status: "PENDING",
-                    clockIn: null,
-                    clockOut: null,
-                    notes: ""
-                });
-            }
-            saveDatabaseToStorage();
+            document.getElementById('adminSub' + targetSub.charAt(0).toUpperCase() + targetSub.slice(1)).classList.remove('hidden');
+            document.getElementById('tabLink' + targetSub.charAt(0).toUpperCase() + targetSub.slice(1)).classList.add('active');
+            
+            if (targetSub === 'home') renderDashboardDataStream();
+            if (targetSub === 'clients') renderClientsViewStructures();
+            if (targetSub === 'employees') renderEmployeesDirectory();
+            if (targetSub === 'admins') renderSupervisorsMatrix();
+            if (targetSub === 'invoices') renderInvoicesLedgerStudio();
+            if (targetSub === 'accounts') renderAccountsPortfolio();
+            if (targetSub === 'reports') initializeReportsSelectors();
+            if (targetSub === 'company') initializeCompanyStudioFields();
         }
 
         function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value.trim();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
             const pass = document.getElementById('loginPassword').value;
 
-            const matchedAdmin = db.supervisors.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
-            if (matchedAdmin) {
-                currentSessionUser = { type: 'ADMIN', data: matchedAdmin };
-                bootSystemInterface();
+            let supMatch = systemState.supervisors.find(s => s.email.toLowerCase() === email && s.password === pass);
+            if (supMatch) {
+                systemState.authenticatedUser = { email: supMatch.email, role: 'ADMIN', name: supMatch.name, permissions: supMatch };
+                bootApplicationPortal();
                 return;
             }
 
-            const matchedCarer = db.employees.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === pass);
-            if (matchedCarer) {
-                currentSessionUser = { type: 'EMPLOYEE', data: matchedCarer };
-                bootSystemInterface();
+            let empMatch = systemState.employees.find(emp => emp.email.toLowerCase() === email && emp.password === pass);
+            if (empMatch) {
+                systemState.authenticatedUser = { id: empMatch.id, email: empMatch.email, role: 'CARER', name: empMatch.name };
+                bootApplicationPortal();
                 return;
             }
 
-            alert("Access Denied: Invalid cryptographic gateway credentials.");
+            alert("Security Handshake Failure: Invalid username email or credential token.");
         }
 
         function handleLogout() {
-            currentSessionUser = null;
+            systemState.authenticatedUser = null;
             document.getElementById('appContainer').classList.add('hidden');
-            document.getElementById('adminPanel').classList.add('hidden');
-            document.getElementById('employeePortal').classList.add('hidden');
             document.getElementById('loginPage').classList.remove('hidden');
         }
 
-        function bootSystemInterface() {
+        function bootApplicationPortal() {
             document.getElementById('loginPage').classList.add('hidden');
             document.getElementById('appContainer').classList.remove('hidden');
             
-            if (currentSessionUser.type === 'ADMIN') {
-                document.getElementById('userGreeting').innerText = `Admin Space: ${currentSessionUser.data.name}`;
+            syncBrandingAcrossApplicationUI();
+
+            if (systemState.authenticatedUser.role === 'ADMIN') {
                 document.getElementById('adminPanel').classList.remove('hidden');
-                document.getElementById('employeePortal').classList.add('hidden');
+                document.getElementById('carerPanel').classList.add('hidden');
                 switchAdminSubView('home');
-                applyUIPermissionsMatrix();
-            } else if (currentSessionUser.type === 'EMPLOYEE') {
-                document.getElementById('userGreeting').innerText = `Field Professional: ${currentSessionUser.data.name}`;
+            } else {
                 document.getElementById('adminPanel').classList.add('hidden');
-                document.getElementById('employeePortal').classList.remove('hidden');
-                renderCarerPortalWorkspace();
+                document.getElementById('carerPanel').classList.remove('hidden');
+                renderCarerMobileDashboard();
             }
         }
 
-        function applyUIPermissionsMatrix() {
-            const p = currentSessionUser.data.perms;
-            document.getElementById('tabLinkClients').className = p.care === 'none' ? 'hidden' : 'nav-link';
-            document.getElementById('tabLinkEmployees').className = p.hr === 'none' ? 'hidden' : 'nav-link';
-            document.getElementById('tabLinkAdmins').className = p.system === 'none' ? 'hidden' : 'nav-link';
-            document.getElementById('tabLinkInvoices').className = p.finance === 'none' ? 'hidden' : 'nav-link';
-            document.getElementById('tabLinkAccounts').className = p.finance === 'none' ? 'hidden' : 'nav-link';
-            document.getElementById('tabLinkReports').className = p.care === 'none' ? 'hidden' : 'nav-link';
-            document.getElementById('tabLinkCompany').className = p.system === 'none' ? 'hidden' : 'nav-link';
+        function syncBrandingAcrossApplicationUI() {
+            document.querySelectorAll('.dynamicLogoTarget').forEach(el => el.textContent = systemState.companyProfile.logoText);
+            document.getElementById('headerCorporateTitle').textContent = systemState.companyProfile.name;
+            document.getElementById('userGreeting').textContent = `Active Profile Session: ${systemState.authenticatedUser.name} (${systemState.authenticatedUser.role})`;
         }
 
-        function switchAdminSubView(target) {
-            const views = ['home', 'clients', 'employees', 'admins', 'invoices', 'accounts', 'reports', 'company'];
-            views.forEach(v => {
-                const el = document.getElementById(`adminSub${v.charAt(0).toUpperCase() + v.slice(1)}`);
-                if (el) el.classList.add('hidden');
-                const link = document.getElementById(`tabLink${v.charAt(0).toUpperCase() + v.slice(1)}`);
-                if (link) link.classList.remove('active');
-            });
-
-            document.getElementById(`adminSub${target.charAt(0).toUpperCase() + target.slice(1)}`).classList.remove('hidden');
-            const activeLink = document.getElementById(`tabLink${target.charAt(0).toUpperCase() + target.slice(1)}`);
-            if (activeLink) activeLink.classList.add('active');
-
-            if (target === 'home') renderDashboardDataStream();
-            if (target === 'clients') renderClientsModuleContext();
-            if (target === 'employees') renderEmployeesModuleContext();
-            if (target === 'admins') renderSupervisorsModuleContext();
-            if (target === 'invoices') renderInvoiceModuleContext();
-            if (target === 'accounts') renderAccountsPortfolioContext();
-            if (target === 'reports') renderReportsModuleContext();
-            if (target === 'company') seedCompanyConfigurationFields();
-        }
-
-        // --- FILTERED STAFF VIEW: INCOMPLETE ITEMS ONLY ---
-        function renderCarerPortalWorkspace() {
-            const container = document.getElementById('carerVisitsContainer');
-            container.innerHTML = '';
-
-            // Filter configuration ensures COMPLETED tasks vanish from the field professional dashboard
-            const myVisits = db.visits.filter(v => v.employeeId === currentSessionUser.data.id && v.status !== 'COMPLETED');
-
-            if(myVisits.length === 0) {
-                container.innerHTML = `<div class="card" style="text-align:center; color:#718096; padding: 30px;">🎉 All allocated jobs finished! No upcoming pending allocations documented on your workspace.</div>`;
-                return;
-            }
-
-            myVisits.sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
-
-            myVisits.forEach(v => {
-                const client = db.clients.find(c => c.id === v.clientId);
-                if(!client) return;
-
-                const card = document.createElement('div');
-                card.className = "live-visit-card";
-                
-                let actionInterfaceHTML = '';
-                
-                if (v.status === 'PENDING') {
-                    actionInterfaceHTML = `
-                        <button class="btn btn-success" style="width:100%; justify-content:center; padding:12px;" onclick="executeCarerClockIn('${v.id}')">▶ Start Shift (Clock-In)</button>
-                    `;
-                } else if (v.status === 'ACTIVE') {
-                    actionInterfaceHTML = `
-                        <div style="background:#fffaf0; border:1px solid #feebc8; padding:12px; border-radius:6px; margin-top:10px;">
-                            <p style="font-size:13px; font-weight:bold; color:var(--warning); margin-bottom:8px;">⏱️ Visit Active since: ${v.clockIn}</p>
-                            <div class="form-group">
-                                <label style="color:var(--danger)">Mandatory Care Handover Notes *</label>
-                                <textarea id="liveNotesInput_${v.id}" rows="4" required placeholder="Describe support provided, clinical status, safety checks, or updates... (Minimum 5 characters required to submit)"></textarea>
-                            </div>
-                            <button class="btn btn-danger" style="width:100%; justify-content:center; padding:10px; font-size:14px;" onclick="executeCarerClockOut('${v.id}')">🛑 Stop Shift & Submit Log</button>
-                        </div>
-                    `;
-                }
-
-                card.innerHTML = `
-                    <div class="live-visit-header">
-                        <div>
-                            <span class="badge badge-${v.status.toLowerCase()}">${v.status}</span>
-                            <strong style="margin-left:8px; font-size:16px;">${client.name}</strong>
-                        </div>
-                        <div style="text-align:right; font-size:13px; font-weight:bold; color:var(--primary);">
-                            ${v.date} @ ${v.time}
-                        </div>
-                    </div>
-                    <div style="font-size:13px; margin-bottom:10px; color:#4a5568; line-height:1.4;">
-                        <strong>Address:</strong> ${client.address}<br>
-                        <strong>Directives Plan:</strong> <span style="color:#2b6cb0;">${client.plan}</span><br>
-                        <strong>Expected Duration:</strong> ${v.hours} hours
-                    </div>
-                    ${actionInterfaceHTML}
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function executeCarerClockIn(visitId) {
-            const idx = db.visits.findIndex(v => v.id === visitId);
-            if (idx > -1) {
-                const now = new Date();
-                db.visits[idx].clockIn = now.toLocaleDateString() + " " + now.toTimeString().split(' ')[0];
-                db.visits[idx].status = 'ACTIVE';
-                saveDatabaseToStorage();
-                renderCarerPortalWorkspace();
-            }
-        }
-
-        function executeCarerClockOut(visitId) {
-            const idx = db.visits.findIndex(v => v.id === visitId);
-            if (idx === -1) return;
-
-            const notesVal = document.getElementById(`liveNotesInput_${visitId}`).value.trim();
+        function renderDashboardDataStream() {
+            document.getElementById('statClientsCount').textContent = `${systemState.clients.length} Clients`;
+            document.getElementById('statStaffCount').textContent = `${systemState.employees.length} Carers`;
             
-            if (!notesVal || notesVal.length < 5) {
-                alert("Validation Exception: Mandatory visit logs missing! Please insert specific shift notes before hitting stop.");
-                return;
-            }
+            let pendingShifts = systemState.visits.filter(v => v.status === 'PENDING').length;
+            document.getElementById('statPendingCount').textContent = `${pendingShifts} Shifts`;
 
-            const now = new Date();
-            db.visits[idx].clockOut = now.toLocaleDateString() + " " + now.toTimeString().split(' ')[0];
-            db.visits[idx].notes = notesVal;
-            db.visits[idx].status = 'COMPLETED';
-            
-            saveDatabaseToStorage();
-            alert("Success: Log entry saved. Task has cleared from your dashboard workspace.");
-            renderCarerPortalWorkspace();
+            let finishedVisits = systemState.visits.filter(v => v.status === 'COMPLETED');
+            let revenue = finishedVisits.reduce((acc, current) => {
+                let timeFactor = current.hours + (current.mins / 60);
+                return acc + (timeFactor * current.rateAtBilling);
+            }, 0);
+            document.getElementById('statGrossRevenue').textContent = revenue.toFixed(2);
+
+            let sortedVisits = [...systemState.visits].sort((a,b) => b.date.localeCompare(a.date)).slice(0, 8);
+            let targetHtml = "";
+            sortedVisits.forEach(v => {
+                let client = systemState.clients.find(c => c.id === v.clientId)?.name || "Unknown";
+                let staff = systemState.employees.find(e => e.id === v.employeeId)?.name || "Unassigned";
+                let badgeClass = v.status === 'COMPLETED' ? 'badge-completed' : 'badge-pending';
+                targetHtml += `<tr>
+                    <td><strong>${client}</strong></td>
+                    <td>${staff}</td>
+                    <td>${v.date} <span style="color:var(--secondary); font-weight:600;">@ ${v.time}</span> (${v.hours}h ${v.mins}m)</td>
+                    <td><span class="badge ${badgeClass}">${v.status}</span></td>
+                </tr>`;
+            });
+            document.getElementById('dashboardLiveTable').innerHTML = targetHtml;
         }
 
-        // --- EDITABLE ADMIN SYSTEM MANAGEMENT ENGINE ---
-        function renderClientsModuleContext() {
-            renderAllLookupSelectMenus();
-            const body = document.getElementById('clientTableBody');
-            body.innerHTML = '';
-            db.clients.forEach(c => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
+        function renderClientsViewStructures() {
+            let clientOpts = systemState.clients.map(c => `<option value="${c.id}">${c.name} (${c.customId})</option>`).join('');
+            let empOpts = systemState.employees.map(e => `<option value="${e.id}">${e.name}</option>`).join('');
+            document.getElementById('rotaClientSelect').innerHTML = clientOpts;
+            document.getElementById('rotaEmployeeSelect').innerHTML = empOpts;
+
+            let tableHtml = "";
+            systemState.clients.forEach(c => {
+                tableHtml += `<tr>
                     <td><code>${c.customId}</code></td>
                     <td><strong>${c.name}</strong></td>
                     <td>${c.phone}</td>
-                    <td>£${parseFloat(c.rate).toFixed(2)}/hr</td>
-                    <td><small>${c.address}</small></td>
+                    <td>£${c.rate.toFixed(2)}/hr</td>
+                    <td><span style="font-size:12px; color:#4a5568;">${c.address}</span></td>
                     <td>
-                        <button class="btn btn-warning" style="padding:4px 8px; font-size:11px;" onclick="loadClientToForm('${c.id}')">Edit</button>
-                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteClientProfile('${c.id}')">Delete</button>
+                        <button class="btn btn-primary" style="padding:4px 8px; font-size:11px;" onclick="loadClientToForm('${c.id}')">✏️ Edit</button>
+                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteClientRecord('${c.id}')">🗑️ Delete</button>
                     </td>
-                `;
-                body.appendChild(tr);
+                </tr>`;
             });
+            document.getElementById('clientTableBody').innerHTML = tableHtml;
 
-            // Re-render master table including interactive editable log note segments
-            renderAdminIndividualVisitsTable();
-        }
-
-        function renderAdminIndividualVisitsTable() {
-            const visitsBody = document.getElementById('individualVisitsTableBody');
-            visitsBody.innerHTML = '';
-            
-            // Show recent assignments on top
-            const visualQueue = [...db.visits].reverse();
-
-            visualQueue.forEach(v => {
-                const client = db.clients.find(c => c.id === v.clientId);
-                const carer = db.employees.find(e => e.id === v.employeeId);
-                const tr = document.createElement('tr');
-                
-                // Formulate notes entry section: Textarea allows live administrative changes
-                let notesEditingBlock = '';
-                if(v.status === 'COMPLETED') {
-                    notesEditingBlock = `
-                        <div style="margin-bottom: 4px;"><small style="color:var(--success); font-weight:bold;">⏱️ Checked In: ${v.clockIn || 'N/A'} | Out: ${v.clockOut || 'N/A'}</small></div>
-                        <textarea id="adminNoteField_${v.id}" rows="2" style="font-size:12px; width:100%;" onchange="updateVisitNoteFromAdmin('${v.id}', this.value)">${v.notes || ''}</textarea>
-                    `;
-                } else if (v.status === 'ACTIVE') {
-                    notesEditingBlock = `<span style="color:var(--warning); font-size:12px; font-weight:bold;">⚠️ In Progress since: ${v.clockIn}</span>`;
-                } else {
-                    notesEditingBlock = `<span style="color:#718096; font-size:12px; font-style:italic;">No log data submitted yet</span>`;
-                }
-
-                tr.innerHTML = `
-                    <td><strong>${v.date}</strong> <br><small>@ ${v.time} (${v.hours}h)</small></td>
-                    <td>${client ? client.name : 'N/A'}</td>
-                    <td>${carer ? carer.name : 'N/A'}</td>
-                    <td>£${v.cost.toFixed(2)}</td>
-                    <td><span class="badge badge-${v.status.toLowerCase()}">${v.status}</span></td>
-                    <td>${notesEditingBlock}</td>
-                    <td>
-                        ${v.status === 'PENDING' ? `<button class="btn btn-success" style="padding:3px 6px; font-size:11px; margin-bottom:4px; display:block;" onclick="changeVisitExecutionStatus('${v.id}','COMPLETED')">Force Complete</button>` : ''}
-                        <button class="btn btn-danger" style="padding:3px 6px; font-size:11px; display:block;" onclick="purgeVisitRecord('${v.id}')">Purge</button>
-                    </td>
-                `;
-                visitsBody.appendChild(tr);
-            });
-        }
-
-        // Live admin update handler to modify notes arrays safely
-        function updateVisitNoteFromAdmin(visitId, updatedValue) {
-            const idx = db.visits.findIndex(v => v.id === visitId);
-            if (idx > -1) {
-                db.visits[idx].notes = updatedValue;
-                saveDatabaseToStorage();
-                // Toast indicator instead of full layout snap
-                console.log(`Log records updated for shift context: ${visitId}`);
-            }
-        }
-
-        // --- CUSTOM REPORTS LOOKUP ENGINE (TIME + CLIENT FILTERS) ---
-        function renderReportsModuleContext() {
-            renderAllLookupSelectMenus();
-            
-            // Set default search constraints to current date parameters
-            const todayStr = new Date().toISOString().split('T')[0];
-            document.getElementById('reportStartDate').value = todayStr.substring(0, 8) + "01";
-            document.getElementById('reportEndDate').value = todayStr;
-        }
-
-        function generateCustomCareLogReport() {
-            const clientId = document.getElementById('reportClientSelect').value;
-            const startDate = document.getElementById('reportStartDate').value;
-            const endDate = document.getElementById('reportEndDate').value;
-
-            const clientObj = db.clients.find(c => c.id === clientId);
-            if(!clientObj) {
-                alert("Please configure a valid client focus parameter target first.");
-                return;
-            }
-
-            // Sync corporate settings header
-            document.getElementById('lblReportIssuerName').innerText = db.company.name;
-            document.getElementById('lblReportCriteriaHeader').innerText = `Statement Scope Logs Window: From ${startDate || 'Earliest'} to ${endDate || 'Latest'}`;
-            
-            document.getElementById('reportClientDetailsBlock').innerHTML = `
-                <strong>Beneficiary Name:</strong> ${clientObj.name} &nbsp;|&nbsp; <strong>Unique ID Code:</strong> ${clientObj.customId}<br>
-                <strong>Residential Address Context:</strong> ${clientObj.address}<br>
-                <strong>Assigned Medical Directives:</strong> ${clientObj.plan}
-            `;
-
-            // Filter operation logs match constraints exactly
-            const logsDataset = db.visits.filter(v => {
-                const matchesClient = v.clientId === clientId;
-                const matchesStart = startDate ? v.date >= startDate : true;
-                const matchesEnd = endDate ? v.date <= endDate : true;
-                return matchesClient && matchesStart && matchesEnd;
-            });
-
-            // Sort chronically
-            logsDataset.sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
-
-            const tableBody = document.getElementById('reportOutputTableBody');
-            tableBody.innerHTML = '';
-
-            if(logsDataset.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:#718096;">No visit allocations match search filter limits.</td></tr>`;
-                return;
-            }
-
-            logsDataset.forEach(v => {
-                const carer = db.employees.find(e => e.id === v.employeeId);
-                const tr = document.createElement('tr');
-                
-                let evvString = "N/A";
-                if(v.clockIn) {
-                    evvString = `In: ${v.clockIn.split(' ')[1] || v.clockIn}<br>Out: ${v.clockOut ? v.clockOut.split(' ')[1] : 'Active'}`;
-                }
-
-                tr.innerHTML = `
-                    <td><strong>${v.date}</strong><br><small>Scheduled: ${v.time}</small></td>
-                    <td><strong>${carer ? carer.name : 'Unassigned Professional'}</strong></td>
-                    <td style="font-family:monospace; font-size:12px;">${evvString}</td>
-                    <td>
-                        <div style="font-weight:bold; margin-bottom:4px; font-size:12px; color:var(--primary);">
-                            Status Badge: <span class="badge badge-${v.status.toLowerCase()}">${v.status}</span>
-                        </div>
-                        <div class="report-notes-box">${v.notes || '<em>No clinical text comments saved.</em>'}</div>
-                    </td>
-                `;
-                tableBody.appendChild(tr);
-            });
-        }
-
-        // --- GENERAL BASELINE ROUTER ADAPTERS ---
-        function renderDashboardDataStream() {
-            document.getElementById('statClientsCount').innerText = `${db.clients.length} Clients`;
-            document.getElementById('statStaffCount').innerText = `${db.employees.length} Carers`;
-            const pendingShifts = db.visits.filter(v => v.status === 'PENDING').length;
-            document.getElementById('statPendingCount').innerText = `${pendingShifts} Shifts`;
-            const grossRevenue = db.visits.reduce((acc, curr) => acc + (curr.status === 'COMPLETED' ? curr.cost : 0), 0);
-            document.getElementById('statGrossRevenue').innerText = grossRevenue.toFixed(2);
-
-            const streamTable = document.getElementById('dashboardLiveTable');
-            streamTable.innerHTML = '';
-            const sortedVisits = [...db.visits].reverse().slice(0, 8);
-            sortedVisits.forEach(v => {
-                const client = db.clients.find(c => c.id === v.clientId);
-                const carer = db.employees.find(e => e.id === v.employeeId);
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${client ? client.name : 'Unknown'}</strong></td>
-                    <td>${carer ? carer.name : 'Unassigned'}</td>
-                    <td>${v.date} @ ${v.time}</td>
-                    <td><span class="badge badge-${v.status.toLowerCase()}">${v.status}</span></td>
-                `;
-                streamTable.appendChild(tr);
-            });
-        }
-
-        function saveClientProfile(e) {
-            e.preventDefault();
-            const internalId = document.getElementById('editClientInternalId').value;
-            const payload = {
-                customId: document.getElementById('clientCustomId').value.trim(),
-                name: document.getElementById('clientName').value.trim(),
-                phone: document.getElementById('clientPhone').value.trim(),
-                rate: parseFloat(document.getElementById('clientRate').value),
-                address: document.getElementById('clientAddress').value.trim(),
-                plan: document.getElementById('clientPlan').value.trim()
-            };
-            if (internalId) {
-                const targetIdx = db.clients.findIndex(c => c.id === internalId);
-                if (targetIdx > -1) db.clients[targetIdx] = { ...db.clients[targetIdx], ...payload };
-            } else {
-                payload.id = "cli_" + Date.now();
-                db.clients.push(payload);
-            }
-            saveDatabaseToStorage();
-            document.getElementById('clientForm').reset();
-            document.getElementById('editClientInternalId').value = '';
-            renderClientsModuleContext();
+            renderIndividualOperationalLogsTable();
         }
 
         function loadClientToForm(id) {
-            const c = db.clients.find(cli => cli.id === id);
+            let c = systemState.clients.find(client => client.id === id);
             if (!c) return;
             document.getElementById('editClientInternalId').value = c.id;
             document.getElementById('clientCustomId').value = c.customId;
@@ -1003,310 +750,560 @@
             document.getElementById('clientRate').value = c.rate;
             document.getElementById('clientAddress').value = c.address;
             document.getElementById('clientPlan').value = c.plan;
+            document.getElementById('clientFormTitle').textContent = "Modify Contextual Client Properties";
         }
 
-        function deleteClientProfile(id) {
-            if (confirm("Confirm removal of client?")) {
-                db.clients = db.clients.filter(c => c.id !== id);
-                saveDatabaseToStorage();
-                renderClientsModuleContext();
-            }
-        }
-
-        function renderEmployeesModuleContext() {
-            const body = document.getElementById('employeeTableBody');
-            body.innerHTML = '';
-            db.employees.forEach(e => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${e.name}</strong></td>
-                    <td><code>${e.email}</code></td>
-                    <td>
-                        <button class="btn btn-warning" style="padding:4px 8px; font-size:11px;" onclick="loadEmployeeToForm('${e.id}')">Edit</button>
-                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="deleteEmployeeProfile('${e.id}')">Remove</button>
-                    </td>
-                `;
-                body.appendChild(tr);
-            });
-        }
-
-        function saveEmployeeProfile(e) {
+        function saveClientProfile(e) {
             e.preventDefault();
-            const internalId = document.getElementById('editEmpInternalId').value;
-            const payload = {
-                name: document.getElementById('empName').value.trim(),
-                email: document.getElementById('empEmail').value.trim(),
-                password: document.getElementById('empPassword').value
+            let internalId = document.getElementById('editClientInternalId').value;
+            let targetObj = {
+                customId: document.getElementById('clientCustomId').value.trim(),
+                name: document.getElementById('clientName').value.trim(),
+                phone: document.getElementById('clientPhone').value.trim(),
+                rate: parseFloat(document.getElementById('clientRate').value),
+                address: document.getElementById('clientAddress').value.trim(),
+                plan: document.getElementById('clientPlan').value.trim()
             };
+
             if (internalId) {
-                const targetIdx = db.employees.findIndex(emp => emp.id === internalId);
-                if (targetIdx > -1) db.employees[targetIdx] = { ...db.employees[targetIdx], ...payload };
+                let idx = systemState.clients.findIndex(c => c.id === internalId);
+                if (idx !== -1) {
+                    systemState.clients[idx] = { ...systemState.clients[idx], ...targetObj };
+                }
             } else {
-                payload.id = "emp_" + Date.now();
-                db.employees.push(payload);
+                targetObj.id = "c_" + Date.now();
+                systemState.clients.push(targetObj);
             }
-            saveDatabaseToStorage();
-            document.getElementById('employeeForm').reset();
-            document.getElementById('editEmpInternalId').value = '';
-            renderEmployeesModuleContext();
+
+            saveStateToDisk();
+            document.getElementById('clientForm').reset();
+            document.getElementById('editClientInternalId').value = "";
+            document.getElementById('clientFormTitle').textContent = "Configure Client Identity Parameters";
+            renderClientsViewStructures();
         }
 
-        function loadEmployeeToForm(id) {
-            const e = db.employees.find(emp => emp.id === id);
-            if (!e) return;
-            document.getElementById('editEmpInternalId').value = e.id;
-            document.getElementById('empName').value = e.name;
-            document.getElementById('empEmail').value = e.email;
-            document.getElementById('empPassword').value = e.password;
-        }
-
-        function deleteEmployeeProfile(id) {
-            if (confirm("Revoke credentials entry for this field professional?")) {
-                db.employees = db.employees.filter(e => e.id !== id);
-                saveDatabaseToStorage();
-                renderEmployeesModuleContext();
+        function deleteClientRecord(id) {
+            if(confirm("Confirm deletion of client record? All unbilled roster items will decouple.")) {
+                systemState.clients = systemState.clients.filter(c => c.id !== id);
+                saveStateToDisk();
+                renderClientsViewStructures();
             }
         }
 
         function generateBulkRotas(e) {
             e.preventDefault();
-            const clientId = document.getElementById('rotaClientSelect').value;
-            const employeeId = document.getElementById('rotaEmployeeSelect').value;
-            const startStr = document.getElementById('rotaStartDate').value;
-            const endStr = document.getElementById('rotaEndDate').value;
-            const timeStr = document.getElementById('rotaTime').value;
-            const hours = parseInt(document.getElementById('rotaTargetHours').value) || 0;
-            const mins = parseInt(document.getElementById('rotaTargetMins').value) || 0;
+            let clientId = document.getElementById('rotaClientSelect').value;
+            let employeeId = document.getElementById('rotaEmployeeSelect').value;
+            let start = new Date(document.getElementById('rotaStartDate').value);
+            let end = new Date(document.getElementById('rotaEndDate').value);
+            let timeStr = document.getElementById('rotaTime').value;
+            let hours = parseInt(document.getElementById('rotaTargetHours').value);
+            let mins = parseInt(document.getElementById('rotaTargetMins').value);
 
-            const clientObj = db.clients.find(c => c.id === clientId);
-            if (!clientObj) return;
+            let dayCheckboxes = document.querySelectorAll('.weekDayPick:checked');
+            let selectedDays = Array.from(dayCheckboxes).map(cb => parseInt(cb.value));
 
-            const baseHours = hours + (mins / 60);
-            const calculatedCost = baseHours * clientObj.rate;
-            const pickedDays = Array.from(document.querySelectorAll('.weekDayPick:checked')).map(el => parseInt(el.value));
+            if (selectedDays.length === 0) {
+                alert("Operation Terminated: Select at least one recurrence pattern weekday check.");
+                return;
+            }
+            if (start > end) {
+                alert("Timeline Error: Start date bound cannot exceed end date threshold.");
+                return;
+            }
 
-            let currentDate = new Date(startStr);
-            const endDate = new Date(endStr);
-            while (currentDate <= endDate) {
-                if (pickedDays.includes(currentDate.getDay())) {
-                    db.visits.push({
-                        id: "vst_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
+            let clientRef = systemState.clients.find(c => c.id === clientId);
+            let generationCount = 0;
+
+            let currentLoopDate = new Date(start);
+            while (currentLoopDate <= end) {
+                let dayOfWeek = currentLoopDate.getDay();
+                if (selectedDays.includes(dayOfWeek)) {
+                    let loopDateStr = currentLoopDate.toISOString().split('T')[0];
+                    systemState.visits.push({
+                        id: "v_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5),
                         clientId: clientId,
                         employeeId: employeeId,
-                        date: currentDate.toISOString().split('T')[0],
+                        date: loopDateStr,
                         time: timeStr,
-                        hours: baseHours,
-                        cost: calculatedCost,
+                        hours: hours,
+                        mins: mins,
+                        rateAtBilling: clientRef ? clientRef.rate : 30.00,
                         status: "PENDING",
-                        clockIn: null,
-                        clockOut: null,
                         notes: ""
                     });
+                    generationCount++;
                 }
-                currentDate.setDate(currentDate.getDate() + 1);
+                currentLoopDate.setDate(currentLoopDate.getDate() + 1);
             }
-            saveDatabaseToStorage();
-            renderClientsModuleContext();
+
+            saveStateToDisk();
+            alert(`Batch array deployment successful. Generated ${generationCount} framework shifts.`);
+            renderClientsViewStructures();
         }
 
-        function changeVisitExecutionStatus(visitId, status) {
-            const idx = db.visits.findIndex(v => v.id === visitId);
-            if (idx > -1) {
-                db.visits[idx].status = status;
-                if(status === 'COMPLETED' && !db.visits[idx].notes) {
-                    db.visits[idx].notes = "Completed via Administrative override adjustment execution.";
-                }
-                saveDatabaseToStorage();
-                renderClientsModuleContext();
-            }
-        }
+        function renderIndividualOperationalLogsTable() {
+            let tableHtml = "";
+            let sortedVisits = [...systemState.visits].sort((a,b) => b.date.localeCompare(a.date));
 
-        function purgeVisitRecord(visitId) {
-            if (confirm("Erase tracking record?")) {
-                db.visits = db.visits.filter(v => v.id !== visitId);
-                saveDatabaseToStorage();
-                renderClientsModuleContext();
-            }
-        }
+            sortedVisits.forEach(v => {
+                let client = systemState.clients.find(c => c.id === v.clientId)?.name || "Missing Record";
+                let staff = systemState.employees.find(e => e.id === v.employeeId)?.name || "Unassigned";
+                let hoursValue = v.hours + (v.mins / 60);
+                let lineCost = hoursValue * v.rateAtBilling;
+                let badgeClass = v.status === 'COMPLETED' ? 'badge-completed' : 'badge-pending';
 
-        function renderSupervisorsModuleContext() {
-            const body = document.getElementById('supervisorTableBody');
-            body.innerHTML = '';
-            db.supervisors.forEach(s => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${s.name}</strong><br><small>${s.email}</small></td>
-                    <td><span class="badge">${s.perms.care.toUpperCase()}</span></td>
-                    <td><span class="badge">${s.perms.finance.toUpperCase()}</span></td>
-                    <td><span class="badge">${s.perms.hr.toUpperCase()}</span></td>
-                    <td><span class="badge">${s.perms.system.toUpperCase()}</span></td>
-                    <td><button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" ${s.email === 'admin@care.com'?'disabled':''} onclick="deleteSupervisorProfile('${s.id}')">Revoke</button></td>
-                `;
-                body.appendChild(tr);
+                tableHtml += `<tr>
+                    <td>${v.date} <span style="font-weight:600; color:var(--primary);">@ ${v.time}</span><br><small style="color:#718096;">(${v.hours}h ${v.mins}m)</small></td>
+                    <td><strong>${client}</strong></td>
+                    <td>${staff}</td>
+                    <td>£${lineCost.toFixed(2)}</td>
+                    <td><span class="badge ${badgeClass}">${v.status}</span></td>
+                    <td>
+                        <textarea id="note_field_${v.id}" rows="1" style="width:100%; font-size:12px;">${v.notes}</textarea>
+                    </td>
+                    <td>
+                        <div style="display:flex; gap:4px; flex-direction:column;">
+                            <button class="btn btn-success" style="padding:3px 6px; font-size:11px;" onclick="commitNotesInline('${v.id}')">💾 Save</button>
+                            <button class="btn btn-danger" style="padding:3px 6px; font-size:11px;" onclick="purgeSingleShift('${v.id}')">Purge</button>
+                        </div>
+                    </td>
+                </tr>`;
             });
+
+            document.getElementById('individualVisitsTableBody').innerHTML = tableHtml;
+        }
+
+        function commitNotesInline(visitId) {
+            let noteVal = document.getElementById(`note_field_${visitId}`).value.trim();
+            let vIdx = systemState.visits.findIndex(v => v.id === visitId);
+            if (vIdx !== -1) {
+                systemState.visits[vIdx].notes = noteVal;
+                if(noteVal && systemState.visits[vIdx].status === 'PENDING') {
+                    systemState.visits[vIdx].status = 'COMPLETED';
+                }
+                saveStateToDisk();
+                alert("Care logs updated into deployment ledger sequence.");
+                renderClientsViewStructures();
+            }
+        }
+
+        function purgeSingleShift(visitId) {
+            if(confirm("Purge selected shift line item from the live ledger framework?")) {
+                systemState.visits = systemState.visits.filter(v => v.id !== visitId);
+                saveStateToDisk();
+                renderClientsViewStructures();
+            }
+        }
+
+        function renderEmployeesDirectory() {
+            let tableHtml = "";
+            systemState.employees.forEach(emp => {
+                tableHtml += `<tr>
+                    <td><strong>${emp.name}</strong></td>
+                    <td><code>${emp.email}</code></td>
+                    <td>
+                        <button class="btn btn-primary" style="padding:4px 8px; font-size:11px;" onclick="loadEmployeeToForm('${emp.id}')">✏️ Edit</button>
+                        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="terminateEmployee('${emp.id}')">❌ Terminate</button>
+                    </td>
+                </tr>`;
+            });
+            document.getElementById('employeeTableBody').innerHTML = tableHtml;
+        }
+
+        function saveEmployeeProfile(e) {
+            e.preventDefault();
+            let internalId = document.getElementById('editEmpInternalId').value;
+            let targetObj = {
+                name: document.getElementById('empName').value.trim(),
+                email: document.getElementById('empEmail').value.trim().toLowerCase(),
+                password: document.getElementById('empPassword').value
+            };
+
+            if(internalId) {
+                let idx = systemState.employees.findIndex(em => em.id === internalId);
+                if(idx !== -1) systemState.employees[idx] = { ...systemState.employees[idx], ...targetObj };
+            } else {
+                targetObj.id = "e_" + Date.now();
+                systemState.employees.push(targetObj);
+            }
+
+            saveStateToDisk();
+            document.getElementById('employeeForm').reset();
+            document.getElementById('editEmpInternalId').value = "";
+            document.getElementById('employeeFormTitle').textContent = "Onboard New Field Care Professional";
+            renderEmployeesDirectory();
+        }
+
+        function loadEmployeeToForm(id) {
+            let emp = systemState.employees.find(e => e.id === id);
+            if(!emp) return;
+            document.getElementById('editEmpInternalId').value = emp.id;
+            document.getElementById('empName').value = emp.name;
+            document.getElementById('empEmail').value = emp.email;
+            document.getElementById('empPassword').value = emp.password;
+            document.getElementById('employeeFormTitle').textContent = "Modify Operational Security Credentials";
+        }
+
+        function terminateEmployee(id) {
+            if(confirm("Confirm irrevocable deletion of care provider professional access profiles?")) {
+                systemState.employees = systemState.employees.filter(e => e.id !== id);
+                saveStateToDisk();
+                renderEmployeesDirectory();
+            }
+        }
+
+        function renderSupervisorsMatrix() {
+            let tableHtml = "";
+            systemState.supervisors.forEach(sup => {
+                tableHtml += `<tr>
+                    <td><strong>${sup.name}</strong><br><small style='color:#718096;'>${sup.email}</small></td>
+                    <td><span class="badge">${sup.permCare}</span></td>
+                    <td><span class="badge">${sup.permFinance}</span></td>
+                    <td><span class="badge">${sup.permHR}</span></td>
+                    <td><span class="badge">${sup.permSystem}</span></td>
+                    <td><button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="purgeSupervisor('${sup.id}')">Revoke</button></td>
+                </tr>`;
+            });
+            document.getElementById('supervisorTableBody').innerHTML = tableHtml;
         }
 
         function saveSupervisorProfile(e) {
             e.preventDefault();
-            db.supervisors.push({
-                id: "sup_" + Date.now(),
+            let newSup = {
+                id: "s_" + Date.now(),
                 name: document.getElementById('supName').value.trim(),
-                email: document.getElementById('supEmail').value.trim(),
+                email: document.getElementById('supEmail').value.trim().toLowerCase(),
                 password: document.getElementById('supPassword').value,
-                perms: {
-                    care: document.getElementById('permCare').value,
-                    finance: document.getElementById('permFinance').value,
-                    hr: document.getElementById('permHR').value,
-                    system: document.getElementById('permSystem').value
-                }
-            });
-            saveDatabaseToStorage();
+                permCare: document.getElementById('permCare').value,
+                permFinance: document.getElementById('permFinance').value,
+                permHR: document.getElementById('permHR').value,
+                permSystem: document.getElementById('permSystem').value
+            };
+            systemState.supervisors.push(newSup);
+            saveStateToDisk();
             document.getElementById('supervisorForm').reset();
-            renderSupervisorsModuleContext();
+            renderSupervisorsMatrix();
         }
 
-        function deleteSupervisorProfile(id) {
-            if(confirm("Confirm erasure?")) {
-                db.supervisors = db.supervisors.filter(s => s.id !== id);
-                saveDatabaseToStorage();
-                renderSupervisorsModuleContext();
+        function purgeSupervisor(id) {
+            if (id === 's1') {
+                alert("Security Protection Rule: Root admin framework master profile cannot be removed.");
+                return;
+            }
+            if(confirm("Revoke administrative rights completely?")) {
+                systemState.supervisors = systemState.supervisors.filter(s => s.id !== id);
+                saveStateToDisk();
+                renderSupervisorsMatrix();
             }
         }
 
-        function renderInvoiceModuleContext() {
-            renderAllLookupSelectMenus();
-            const ledger = document.getElementById('historicalInvoicesLedgerBody');
-            ledger.innerHTML = '';
-            db.invoices.forEach(inv => {
-                const tr = document.createElement('tr');
-                tr.className = `clickable-row ${selectedInvoiceId === inv.id ? 'selected-row' : ''}`;
-                tr.setAttribute('onclick', `selectActiveInvoiceManifest('${inv.id}')`);
-                tr.innerHTML = `<td><strong>${inv.invoiceNumber}</strong></td><td>${inv.clientName}</td><td><small>${inv.start}/${inv.end}</small></td><td><strong>£${inv.grossTotal.toFixed(2)}</strong></td><td><span class="badge badge-${inv.status==='PAID'?'completed':'pending'}">${inv.status}</span></td>`;
-                ledger.appendChild(tr);
+        function renderInvoicesLedgerStudio() {
+            let optionsHtml = systemState.clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            document.getElementById('genInvoiceClientSelect').innerHTML = optionsHtml;
+
+            let invoiceRows = "";
+            systemState.invoices.forEach(inv => {
+                let client = systemState.clients.find(c => c.id === inv.clientId)?.name || "Unknown Account";
+                let badgeClass = inv.isPaid ? 'badge-completed' : 'badge-pending';
+                let rowSelectClass = systemState.selectedInvoiceId === inv.id ? 'selected-row' : '';
+
+                invoiceRows += `<tr class="clickable-row ${rowSelectClass}" onclick="setSelectedInvoiceTarget('${inv.id}')">
+                    <td><code>#INV-${inv.invoiceNumber}</code></td>
+                    <td><strong>${client}</strong></td>
+                    <td><small>${inv.startRange} to ${inv.endRange}</small></td>
+                    <td><strong>£${inv.grossTotal.toFixed(2)}</strong></td>
+                    <td><span class="badge ${badgeClass}">${inv.isPaid ? 'PAID' : 'UNSETTLED'}</span></td>
+                </tr>`;
             });
+            document.getElementById('historicalInvoicesLedgerBody').innerHTML = invoiceRows || "<tr><td colspan='5' style='text-align:center; color:#a0aec0;'>No invoices found in archive stack.</td></tr>";
+            
             refreshActiveInvoicePrintDisplay();
         }
 
         function executeInvoiceGenerationEngine() {
-            const clientId = document.getElementById('genInvoiceClientSelect').value;
-            const start = document.getElementById('genInvoiceStart').value;
-            const end = document.getElementById('genInvoiceEnd').value;
-            const clientObj = db.clients.find(c => c.id === clientId);
-            if (!clientObj) return;
+            let clientId = document.getElementById('genInvoiceClientSelect').value;
+            let startStr = document.getElementById('genInvoiceStart').value;
+            let endStr = document.getElementById('genInvoiceEnd').value;
 
-            const filteredVisits = db.visits.filter(v => v.clientId === clientId && v.status === 'COMPLETED' && v.date >= start && v.date <= end);
-            if(filteredVisits.length === 0) { alert("Zero verified elements found."); return; }
+            if(!startStr || !endStr) {
+                alert("Ledger Fault: Execution parameters require distinct timeline windows.");
+                return;
+            }
 
-            const totalHours = filteredVisits.reduce((acc, v) => acc + v.hours, 0);
-            const grossBill = filteredVisits.reduce((acc, v) => acc + v.cost, 0);
+            let targetVisits = systemState.visits.filter(v => {
+                return v.clientId === clientId && v.status === 'COMPLETED' && v.date >= startStr && v.date <= endStr;
+            });
 
-            const newInvoice = {
+            if (targetVisits.length === 0) {
+                alert("Process Halt: Zero (0) completed clinical shifts were located for this client parameter set.");
+                return;
+            }
+
+            let computedGross = targetVisits.reduce((acc, curr) => {
+                let clockHours = curr.hours + (curr.mins / 60);
+                return acc + (clockHours * curr.rateAtBilling);
+            }, 0);
+
+            let generatedInvoice = {
                 id: "inv_" + Date.now(),
-                invoiceNumber: "INV-2026-" + Math.floor(100000 + Math.random() * 900000),
+                invoiceNumber: 1000 + systemState.invoices.length,
                 clientId: clientId,
-                clientName: clientObj.name,
-                clientAddress: clientObj.address,
-                clientRate: clientObj.rate,
-                start: start,
-                end: end,
-                totalVisits: filteredVisits.length,
-                totalHours: totalHours,
-                grossTotal: grossBill,
-                status: "UNPAID",
-                items: filteredVisits.map(v => ({ date: v.date, time: v.time, carerName: 'Specialist Staff', hours: v.hours, lineTotal: v.cost }))
+                startRange: startStr,
+                endRange: endStr,
+                grossTotal: computedGross,
+                isPaid: false,
+                itemizedLines: targetVisits.map(v => ({
+                    date: v.date,
+                    time: v.time,
+                    hours: v.hours,
+                    mins: v.mins,
+                    rate: v.rateAtBilling
+                }))
             };
 
-            db.invoices.push(newInvoice);
-            saveDatabaseToStorage();
-            selectedInvoiceId = newInvoice.id;
-            renderInvoiceModuleContext();
+            systemState.invoices.push(generatedInvoice);
+            systemState.selectedInvoiceId = generatedInvoice.id;
+            saveStateToDisk();
+            renderInvoicesLedgerStudio();
+            alert("Success: Invoice asset locked onto organizational ledger archive.");
         }
 
-        function selectActiveInvoiceManifest(id) { selectedInvoiceId = id; renderInvoiceModuleContext(); }
+        function setSelectedInvoiceTarget(id) {
+            systemState.selectedInvoiceId = id;
+            renderInvoicesLedgerStudio();
+        }
+
         function toggleActiveInvoiceSettlementState() {
-            if(!selectedInvoiceId) return;
-            const idx = db.invoices.findIndex(i => i.id === selectedInvoiceId);
-            if (idx > -1) { db.invoices[idx].status = db.invoices[idx].status === 'PAID' ? 'UNPAID' : 'PAID'; saveDatabaseToStorage(); renderInvoiceModuleContext(); }
-        }
-
-        function refreshActiveInvoicePrintDisplay() {
-            if (!selectedInvoiceId) return;
-            const inv = db.invoices.find(i => i.id === selectedInvoiceId);
-            if (!inv) return;
-            document.getElementById('lblPrintInvoiceId').innerText = inv.invoiceNumber;
-            document.getElementById('printRecipientBlock').innerHTML = `${inv.clientName.toUpperCase()}<br>${inv.clientAddress}`;
-            document.getElementById('aggregateVisitsCount').innerText = inv.totalVisits;
-            document.getElementById('aggregateHours').innerText = inv.totalHours.toFixed(2);
-            document.getElementById('aggregateBill').innerText = inv.grossTotal.toFixed(2);
-
-            const body = document.getElementById('adminMasterTableBody');
-            body.innerHTML = `<tr><td>Domiciliary Operations Care Block</td><td>${inv.totalHours.toFixed(2)} Hrs</td><td>£${inv.clientRate}/hr</td><td>£${inv.grossTotal.toFixed(2)}</td></tr>`;
-        }
-
-        function renderAccountsPortfolioContext() {
-            const body = document.getElementById('accountsSummaryLedgerTableBody');
-            body.innerHTML = '';
-            db.clients.forEach(c => {
-                const clientInvoices = db.invoices.filter(i => i.clientId === c.id);
-                const billedSum = clientInvoices.reduce((acc, i) => acc + i.grossTotal, 0);
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td><code>${c.customId}</code></td><td><strong>${c.name}</strong></td><td>${clientInvoices.length} Issued</td><td><strong>£${billedSum.toFixed(2)}</strong></td><td><button class="btn btn-primary" style="padding:4px 8px; font-size:11px;" onclick="switchAdminSubView('invoices')">Review</button></td>`;
-                body.appendChild(tr);
-            });
-        }
-
-        function seedCompanyConfigurationFields() {
-            document.getElementById('cfgCompanyName').value = db.company.name;
-            document.getElementById('cfgCompanyNumber').value = db.company.crn;
-            document.getElementById('cfgCompanyPhone').value = db.company.phone;
-            document.getElementById('cfgCompanyEmail').value = db.company.email;
-            document.getElementById('cfgCompanyWebsite').value = db.company.website;
-            document.getElementById('cfgCompanyAddress').value = db.company.address;
-        }
-
-        function saveCompanyProfileData(e) {
-            e.preventDefault();
-            db.company.name = document.getElementById('cfgCompanyName').value;
-            saveDatabaseToStorage();
-            syncCompanyDomProfile();
-            alert("Updated.");
-        }
-
-        function processCorporateLogoUpload(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { db.company.logoData = e.target.result; saveDatabaseToStorage(); syncCompanyDomProfile(); }
-                reader.readAsDataURL(file);
+            if(!systemState.selectedInvoiceId) return alert("Select an invoice asset from ledger view first.");
+            let idx = systemState.invoices.findIndex(inv => inv.id === systemState.selectedInvoiceId);
+            if (idx !== -1) {
+                systemState.invoices[idx].isPaid = !systemState.invoices[idx].isPaid;
+                saveStateToDisk();
+                renderInvoicesLedgerStudio();
             }
         }
 
-        function syncCompanyDomProfile() {
-            const c = db.company;
-            document.getElementById('headerCorporateTitle').innerText = c.name;
-            const targets = document.querySelectorAll('.dynamicLogoTarget');
-            targets.forEach(t => {
-                if (c.logoData) t.innerHTML = `<img src="${c.logoData}" class="logo-preview-img">`;
-            });
+        function refreshActiveInvoicePrintDisplay() {
+            document.getElementById('lblPrintCompanyName').textContent = systemState.companyProfile.name;
+            document.getElementById('lblPrintCompanyMeta').textContent = systemState.companyProfile.meta;
+            document.getElementById('printIssuerBlock').innerHTML = `${systemState.companyProfile.address.replace(/\n/g, '<br>')}<br>Tel: ${systemState.companyProfile.phone || 'N/A'}<br>Reg: ${systemState.companyProfile.regNumber || 'N/A'}`;
+            document.getElementById('lblPrintBankString').innerHTML = `<strong>Bank Sort Code:</strong> ${systemState.companyProfile.bankSort} &nbsp;|&nbsp; <strong>Account Number:</strong> ${systemState.companyProfile.bankAcc}`;
+
+            if(!systemState.selectedInvoiceId) {
+                document.getElementById('printPaymentStatusBanner').className = "payment-status-header status-unpaid";
+                document.getElementById('printPaymentStatusBanner').textContent = "NO ACTIVE INVOICE CHOSEN";
+                return;
+            }
+
+            let inv = systemState.invoices.find(invoice => invoice.id === systemState.selectedInvoiceId);
+            let client = systemState.clients.find(c => c.id === inv.clientId);
+
+            let banner = document.getElementById('printPaymentStatusBanner');
+            if (inv.isPaid) {
+                banner.className = "payment-status-header status-paid";
+                banner.textContent = "✓ TRANSACTION SETTLED - FULL PAYMENT CONFIRMED";
+            } else {
+                banner.className = "payment-status-header status-unpaid";
+                banner.textContent = "⚠️ REMITTANCE OUTSTANDING - PAYMENT OVERDUE";
+            }
+
+            document.getElementById('lblPrintInvoiceId').textContent = `#INV-${inv.invoiceNumber}`;
+            document.getElementById('lblPrintStatementRange').textContent = `Billing Scope Window: ${inv.startRange} to ${inv.endRange}`;
+            
+            if (client) {
+                document.getElementById('printRecipientBlock').innerHTML = `${client.name}<br>${client.address.replace(/\n/g, '<br>')}<br>Tel: ${client.phone}`;
+            }
+
+            let totalVolume = inv.itemizedLines.length;
+            let totalHours = inv.itemizedLines.reduce((acc, val) => acc + val.hours + (val.mins / 60), 0);
+            
+            document.getElementById('aggregateVisitsCount').textContent = totalVolume;
+            document.getElementById('aggregateHours').textContent = totalHours.toFixed(2);
+            document.getElementById('aggregateBill').textContent = inv.grossTotal.toFixed(2);
+
+            let displayMode = document.getElementById('invoicePrintModeEngine').value;
+            let tableBodyHtml = "";
+
+            if (displayMode === 'SUMMARY') {
+                document.getElementById('invoiceTableHeaderBlock').innerHTML = `<tr><th>Description</th><th>Units / Hours</th><th>Rate</th><th>Line Total</th></tr>`;
+                tableBodyHtml = `<tr>
+                    <td>Aggregate Domiciliary Clinical Care Services Framework Delivery</td>
+                    <td>${totalHours.toFixed(2)} Hours</td>
+                    <td>As Specified</td>
+                    <td><strong>£${inv.grossTotal.toFixed(2)}</strong></td>
+                </tr>`;
+            } else {
+                document.getElementById('invoiceTableHeaderBlock').innerHTML = `<tr><th>Deployment Block Date</th><th>Time Windows</th><th>Hours Measure</th><th>Base Rate</th><th>Line Cost</th></tr>`;
+                inv.itemizedLines.forEach(line => {
+                    let duration = line.hours + (line.mins / 60);
+                    let cost = duration * line.rate;
+                    tableBodyHtml += `<tr>
+                        <td>${line.date}</td>
+                        <td>${line.time}</td>
+                        <td>${line.hours}h ${line.mins}m</td>
+                        <td>£${line.rate.toFixed(2)}/hr</td>
+                        <td>£${cost.toFixed(2)}</td>
+                    </tr>`;
+                });
+            }
+
+            document.getElementById('adminMasterTableBody').innerHTML = tableBodyHtml;
         }
 
-        function renderAllLookupSelectMenus() {
-            const clientMenus = [
-                document.getElementById('rotaClientSelect'), 
-                document.getElementById('genInvoiceClientSelect'),
-                document.getElementById('reportClientSelect')
-            ];
-            const carerMenus = [document.getElementById('rotaEmployeeSelect')];
-            
-            clientMenus.forEach(menu => {
-                if(!menu) return; menu.innerHTML = '';
-                db.clients.forEach(c => { const opt = document.createElement('option'); opt.value = c.id; opt.innerText = c.name; menu.appendChild(opt); });
+        function renderAccountsPortfolio() {
+            document.getElementById('accTotalInvoicesCount').textContent = systemState.invoices.length;
+            let totalInvoicedRevenue = systemState.invoices.reduce((acc, curr) => acc + curr.grossTotal, 0);
+            document.getElementById('accTotalInvoicedRevenue').textContent = totalInvoicedRevenue.toFixed(2);
+
+            let tableRows = "";
+            systemState.clients.forEach(c => {
+                let clientInvoices = systemState.invoices.filter(i => i.clientId === c.id);
+                let aggregatedValue = clientInvoices.reduce((acc, curr) => acc + curr.grossTotal, 0);
+
+                tableRows += `<tr>
+                    <td><code>${c.customId}</code></td>
+                    <td><strong>${c.name}</strong></td>
+                    <td>${clientInvoices.length} Invoices Locked</td>
+                    <td><strong style="color: var(--primary);">£${aggregatedValue.toFixed(2)}</strong></td>
+                    <td><button class="btn btn-primary" style="padding:4px 8px; font-size:11px;" onclick="switchAdminSubView('invoices'); document.getElementById('genInvoiceClientSelect').value='${c.id}';">Open Invoicing</button></td>
+                </tr>`;
             });
-            carerMenus.forEach(menu => {
-                if(!menu) return; menu.innerHTML = '';
-                db.employees.forEach(e => { const opt = document.createElement('option'); opt.value = e.id; opt.innerText = e.name; menu.appendChild(opt); });
-            });
+            document.getElementById('accountsSummaryLedgerTableBody').innerHTML = tableRows;
         }
+
+        function initializeReportsSelectors() {
+            let optionsHtml = systemState.clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            document.getElementById('reportClientSelect').innerHTML = optionsHtml;
+        }
+
+        function generateCustomCareLogReport() {
+            let clientId = document.getElementById('reportClientSelect').value;
+            let start = document.getElementById('reportStartDate').value;
+            let end = document.getElementById('reportEndDate').value;
+
+            if(!start || !end) return alert("Timeline Param Error: Pick a proper scope start and end range first.");
+
+            let targetClient = systemState.clients.find(c => c.id === clientId);
+            document.getElementById('lblReportMetaInfo').innerHTML = `<strong>Beneficiary Statement:</strong> ${targetClient ? targetClient.name : 'Unknown Account'}<br>Historical window logs filter bounding array: ${start} to ${end}`;
+
+            let reportShifts = systemState.visits.filter(v => v.clientId === clientId && v.date >= start && v.date <= end && v.status === 'COMPLETED');
+
+            if(reportShifts.length === 0) {
+                document.getElementById('reportPrintContent').innerHTML = `<p style="color:var(--danger); font-style:italic; padding:20px 0;">Zero (0) verified healthcare observation shift lines match these active criteria bounds.</p>`;
+                return;
+            }
+
+            let reportHtml = "";
+            reportShifts.forEach(s => {
+                let clinician = systemState.employees.find(e => e.id === s.employeeId)?.name || "Assigned Provider Staff";
+                reportHtml += `<div style="border:1px solid #cbd5e0; padding:12px; border-radius:6px; margin-bottom:12px; background:#fff;">
+                    <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; color:var(--primary); margin-bottom:6px;">
+                        <span>📅 Date: ${s.date} @ ${s.time}</span>
+                        <span>👩‍⚕️ Care Professional: ${clinician}</span>
+                    </div>
+                    <div style="font-size:12px; color:#718096; margin-bottom:4px;"><strong>Deployment Duration Measure:</strong> ${s.hours} hours, ${s.mins} minutes</div>
+                    <div class="report-notes-box"><strong>Documented Health Metrics & Operational Notes:</strong><br>${s.notes || 'No note details injected into systemic registry block.'}</div>
+                </div>`;
+            });
+
+            document.getElementById('reportPrintContent').innerHTML = reportHtml;
+        }
+
+        // ================= BUSINESS LOGIC: COMPANY PROFILE STUDIO (FIXED MECHANICS) =================
+        function initializeCompanyStudioFields() {
+            document.getElementById('cfgCompName').value = systemState.companyProfile.name || "";
+            document.getElementById('cfgCompLogoText').value = systemState.companyProfile.logoText || "";
+            document.getElementById('cfgCompPhone').value = systemState.companyProfile.phone || "";
+            document.getElementById('cfgCompRegNo').value = systemState.companyProfile.regNumber || "";
+            document.getElementById('cfgCompMeta').value = systemState.companyProfile.meta || "";
+            document.getElementById('cfgCompAddress').value = systemState.companyProfile.address || "";
+            document.getElementById('cfgBankSort').value = systemState.companyProfile.bankSort || "";
+            document.getElementById('cfgBankAcc').value = systemState.companyProfile.bankAcc || "";
+
+            updateBrandingDisplayPreview();
+        }
+
+        function saveCompanyProfileSettings(e) {
+            e.preventDefault();
+            
+            // Explicitly extract all fields to avoid data drops
+            systemState.companyProfile.name = document.getElementById('cfgCompName').value.trim();
+            systemState.companyProfile.logoText = document.getElementById('cfgCompLogoText').value.trim();
+            systemState.companyProfile.phone = document.getElementById('cfgCompPhone').value.trim();
+            systemState.companyProfile.regNumber = document.getElementById('cfgCompRegNo').value.trim();
+            systemState.companyProfile.meta = document.getElementById('cfgCompMeta').value.trim();
+            systemState.companyProfile.address = document.getElementById('cfgCompAddress').value.trim();
+            systemState.companyProfile.bankSort = document.getElementById('cfgBankSort').value.trim();
+            systemState.companyProfile.bankAcc = document.getElementById('cfgBankAcc').value.trim();
+
+            saveStateToDisk();
+            updateBrandingDisplayPreview();
+            syncBrandingAcrossApplicationUI(); // Instantly update header text elements
+            
+            alert("Corporate details and registration profiles updated successfully.");
+        }
+
+        function updateBrandingDisplayPreview() {
+            document.getElementById('previewCompName').textContent = systemState.companyProfile.name;
+            document.getElementById('previewCompMeta').textContent = systemState.companyProfile.meta;
+            document.getElementById('previewCompContact').textContent = `📞 ${systemState.companyProfile.phone} | 📋 ${systemState.companyProfile.regNumber}`;
+        }
+
+        function renderCarerMobileDashboard() {
+            let carerId = systemState.authenticatedUser.id;
+            let carerShifts = systemState.visits.filter(v => v.employeeId === carerId).sort((a,b) => b.date.localeCompare(a.date));
+
+            if(carerShifts.length === 0) {
+                document.getElementById('carerVisitsLayout').innerHTML = "<div class='card'><p style='text-align:center; color:#718096;'>No upcoming or historic clinical deployment assignments matched your professional security profile token ID.</p></div>";
+                return;
+            }
+
+            let layoutHtml = "";
+            carerShifts.forEach(shift => {
+                let targetClient = systemState.clients.find(c => c.id === shift.clientId);
+                let badgeClass = shift.status === 'COMPLETED' ? 'badge-completed' : 'badge-pending';
+
+                layoutHtml += `<div class="live-visit-card">
+                    <div class="live-visit-header">
+                        <div>
+                            <strong style="color:var(--primary); font-size:16px;">${targetClient ? targetClient.name : 'Unknown'}</strong>
+                            <div style="font-size:12px; color:#718096;">ID: ${targetClient ? targetClient.customId : '#N/A'}</div>
+                        </div>
+                        <span class="badge ${badgeClass}">${shift.status}</span>
+                    </div>
+                    <div style="font-size:13px; line-height:1.5; margin-bottom:10px;">
+                        <strong>📍 Address Target:</strong> ${targetClient ? targetClient.address : 'No address details verified.'}<br>
+                        <strong>⏰ Clock Window:</strong> ${shift.date} at ${shift.time} (${shift.hours}h ${shift.mins}m)<br>
+                        <strong>📋 Directives Plan:</strong> <span style="font-style:italic; color:#4a5568;">${targetClient ? targetClient.plan : 'None'}</span>
+                    </div>
+                    <div class="form-group" style="margin-top:5px;">
+                        <label style="font-size:11px; text-transform:uppercase; color:var(--secondary);">Add/Edit Session Narrative Observation Logs</label>
+                        <textarea id="carer_notes_input_${shift.id}" rows="2" placeholder="Document nutrition updates, medication tracking compliance metrics, and vital health milestones here..." style="font-size:13px; margin-bottom:6px;">${shift.notes}</textarea>
+                        <button class="btn btn-success" style="width:100%; justify-content:center; padding:6px;" onclick="commitCarerObservation('${shift.id}')">💾 Submit Secure Log Entry</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('carerVisitsLayout').innerHTML = layoutHtml;
+        }
+
+        function commitCarerObservation(id) {
+            let notesText = document.getElementById(`carer_notes_input_${id}`).value.trim();
+            let shiftIdx = systemState.visits.findIndex(v => v.id === id);
+            if (shiftIdx !== -1) {
+                systemState.visits[shiftIdx].notes = notesText;
+                if(notesText && systemState.visits[shiftIdx].status === 'PENDING') {
+                    systemState.visits[shiftIdx].status = 'COMPLETED';
+                }
+                saveStateToDisk();
+                alert("Clinical note array committed and transmitted to enterprise administrative dashboards.");
+                renderCarerMobileDashboard();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStateFromDisk();
+        });
     </script>
 </body>
 </html>
